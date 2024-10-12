@@ -25,7 +25,7 @@ public class SingleStarServlet extends HttpServlet {
 
     public void init(ServletConfig config) {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedbexample");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
             e.printStackTrace();
         }
@@ -53,8 +53,14 @@ public class SingleStarServlet extends HttpServlet {
             // Get a connection from dataSource
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT * from stars as s, stars_in_movies as sim, movies as m " +
-                    "where m.id = sim.movieId and sim.starId = s.id and s.id = ?";
+            String query = "SELECT s.id, s.name, COALESCE(s.birthYear, 'N/A') AS birth_year, " +
+                    "GROUP_CONCAT(m.title ORDER BY m.title SEPARATOR ', ') AS movies, " +
+                    "GROUP_CONCAT(m.id ORDER BY m.title SEPARATOR ', ') AS movie_ids " +
+                    "FROM stars s " +
+                    "LEFT JOIN stars_in_movies sim ON s.id = sim.starId " +
+                    "LEFT JOIN movies m ON sim.movieId = m.id " +
+                    "WHERE s.id = ? " +
+                    "GROUP BY s.id";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -73,7 +79,7 @@ public class SingleStarServlet extends HttpServlet {
 
                 String starId = rs.getString("starId");
                 String starName = rs.getString("name");
-                String starDob = rs.getString("birthYear");
+                String starDob = rs.getString("birth_year");
 
                 String movieId = rs.getString("movieId");
                 String movieTitle = rs.getString("title");
