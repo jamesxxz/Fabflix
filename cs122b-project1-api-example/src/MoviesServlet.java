@@ -16,10 +16,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 
-// Declaring a WebServlet called StarsServlet, which maps to url "/api/stars"
-@WebServlet(name = "StarsServlet", urlPatterns = "/api/stars")
-public class StarsServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+// Declaring a WebServlet called MoviesServlet, which maps to url "/api/movies"
+@WebServlet(name = "MoviesServlet", urlPatterns = "/api/movies")
+public class MoviesServlet extends HttpServlet {
+    private static final long serialVersionUID = 3L;
 
     // Create a dataSource which registered in web.
     private DataSource dataSource;
@@ -48,7 +48,18 @@ public class StarsServlet extends HttpServlet {
             // Declare our statement
             Statement statement = conn.createStatement();
 
-            String query = "SELECT * from stars";
+            String query = "SELECT m.title, m.year, m.director, r.rating " +
+                            "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name LIMIT 3) AS genres " +
+                            "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name LIMIT 3) AS stars " +
+                            "from movies as m " +
+                            "JOIN ratings as r ON r.movieId=m.id " +
+                            "LEFT JOIN genres_in_movies as gm ON m.id=gm.movieId " +
+                            "LEFT JOIN genres as g ON gm.genreId=g.id " +
+                            "LEFT JOIN stars_in_movies as sim ON m.id=sim.movieId " +
+                            "LEFT JOIN stars as s ON sim.starId=s.id " +
+                            "GROUP BY m.id, m.title, m.year, m.director, r.rating " +
+                            "ORDER BY r.rating DESC " +
+                            "limit 20";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -57,15 +68,17 @@ public class StarsServlet extends HttpServlet {
 
             // Iterate through each row of rs
             while (rs.next()) {
-                String star_id = rs.getString("id");
-                String star_name = rs.getString("name");
-                String star_dob = rs.getString("birthYear");
+                String movie_title = rs.getString("title");
+                String movie_yr = rs.getString("year");
+                String movie_director = rs.getString("director");
+                String rating = rs.getString("rating");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_id", star_id);
-                jsonObject.addProperty("star_name", star_name);
-                jsonObject.addProperty("star_dob", star_dob);
+                jsonObject.addProperty("movie_title", movie_title);
+                jsonObject.addProperty("movie_yr", movie_yr);
+                jsonObject.addProperty("movie_director", movie_director);
+                jsonObject.addProperty("rating", rating);
 
                 jsonArray.add(jsonObject);
             }
