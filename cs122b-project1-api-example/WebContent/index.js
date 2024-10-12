@@ -28,10 +28,10 @@ function handleMoviesResult(resultData) {
         rowHTML += "<tr>";
         rowHTML +=
             "<th>" +
-            // Add a link to single-star.html with id passed with GET url parameter
-            // '<a href="single-star.html?id=' + resultData[i]['star_id'] + '">'
-            resultData[i]["movie_title"] +     // display movie_title for the link text
-            // '</a>' +
+            // Add a link to single-movie.html with id passed with GET url parameter
+            '<a href="single-movie.html?id=' + resultData[i]['movie_id'] + '">' +
+            resultData[i]["movie_title"] +      // display movie_title for the link text
+            '</a>' +
             "</th>";
         rowHTML += "<th>" + resultData[i]["movie_yr"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";

@@ -12,16 +12,15 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
+// Declaring a WebServlet called SingleMovieServlet, which maps to url "/api/single-movie"
+@WebServlet(name = "SingleMovieServlet", urlPatterns = "/api/single-movie")
+public class SingleMovieServlet extends HttpServlet {
+    private static final long serialVersionUID = 2L;
 
-// Declaring a WebServlet called MoviesServlet, which maps to url "/api/movies"
-@WebServlet(name = "MoviesServlet", urlPatterns = "/api/movies")
-public class MoviesServlet extends HttpServlet {
-    private static final long serialVersionUID = 3L;
-
-    // Create a dataSource which registered in web.
+    // Create a dataSource which registered in web.xml
     private DataSource dataSource;
 
     public void init(ServletConfig config) {
@@ -33,45 +32,50 @@ public class MoviesServlet extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     * response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         response.setContentType("application/json"); // Response mime type
+
+        // Retrieve parameter id from url request.
+        String id = request.getParameter("id");
+
+        // The log message can be found in localhost log
+        request.getServletContext().log("getting id: " + id);
 
         // Output stream to STDOUT
         PrintWriter out = response.getWriter();
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
+            // Get a connection from dataSource
 
-            // Declare our statement
-            Statement statement = conn.createStatement();
-
-            String query = "WITH TopGenres AS ( " +
-                            "SELECT g.name, gim.movieId, " +
-                            "ROW_NUMBER() OVER (PARTITION BY gim.movieId ORDER BY g.name) AS genreRank " +
-                            "FROM genres_in_movies gim " +
-                            "JOIN genres g ON gim.genreId = g.id)," +
-                            "TopStars AS ( " +
-                            "SELECT s.name, sim.movieId, " +
-                            "ROW_NUMBER() OVER (PARTITION BY sim.movieId ORDER BY s.name) AS starRank " +
-                            "FROM stars_in_movies sim " +
-                            "JOIN stars s ON sim.starId = s.id) " +
-
-                            "SELECT m.id, m.title, m.year, m.director, " +
-                            "(SELECT GROUP_CONCAT(g.name SEPARATOR ', ') " +
-                            "FROM TopGenres g WHERE g.movieId = m.id AND g.genreRank <= 3) AS genres, " +
-                            "(SELECT GROUP_CONCAT(s.name SEPARATOR ', ') " +
-                            "FROM TopStars s WHERE s.movieId = m.id AND s.starRank <= 3) AS stars, " +
+            // Construct a query with parameter represented by "?"
+            String query = "SELECT m.id, m.title, m.year, m.director, " +
+                            "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name SEPARATOR ', ') AS genres, " +
+                            "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ', ') AS stars, " +
                             "r.rating " +
                             "FROM movies m " +
                             "JOIN ratings r ON m.id = r.movieId " +
-                            "ORDER BY r.rating DESC " +
-                            "LIMIT 20;";
+                            "LEFT JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                            "LEFT JOIN genres g ON gim.genreId = g.id " +
+                            "LEFT JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                            "LEFT JOIN stars s ON sim.starId = s.id " +
+                            "WHERE m.id = ? " +
+                            "GROUP BY m.id, m.title, m.year, m.director, r.rating";
+
+
+            // Declare our statement
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            // Set the parameter represented by "?" in the query to the id we get from url,
+            // num 1 indicates the first "?" in the query
+            statement.setString(1, id);
 
             // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 
@@ -84,8 +88,8 @@ public class MoviesServlet extends HttpServlet {
                 String genres = rs.getString("genres");
                 String stars = rs.getString("stars");
                 String rating = rs.getString("rating");
-
                 // Create a JsonObject based on the data we retrieve from rs
+
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", movieId);
                 jsonObject.addProperty("movie_title", movie_title);
@@ -100,21 +104,19 @@ public class MoviesServlet extends HttpServlet {
             rs.close();
             statement.close();
 
-            // Log to localhost log
-            request.getServletContext().log("getting " + jsonArray.size() + " results");
-
             // Write JSON string to output
             out.write(jsonArray.toString());
             // Set response status to 200 (OK)
             response.setStatus(200);
 
         } catch (Exception e) {
-
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.getMessage());
             out.write(jsonObject.toString());
 
+            // Log error to localhost log
+            request.getServletContext().log("Error:", e);
             // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         } finally {
@@ -124,4 +126,5 @@ public class MoviesServlet extends HttpServlet {
         // Always remember to close db connection after usage. Here it's done by try-with-resources
 
     }
+
 }
