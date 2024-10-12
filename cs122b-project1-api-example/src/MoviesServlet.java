@@ -48,18 +48,23 @@ public class MoviesServlet extends HttpServlet {
             // Declare our statement
             Statement statement = conn.createStatement();
 
-            String query = "SELECT m.title, m.year, m.director, r.rating " +
-                            "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name LIMIT 3) AS genres " +
-                            "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name LIMIT 3) AS stars " +
-                            "from movies as m " +
-                            "JOIN ratings as r ON r.movieId=m.id " +
-                            "LEFT JOIN genres_in_movies as gm ON m.id=gm.movieId " +
-                            "LEFT JOIN genres as g ON gm.genreId=g.id " +
-                            "LEFT JOIN stars_in_movies as sim ON m.id=sim.movieId " +
-                            "LEFT JOIN stars as s ON sim.starId=s.id " +
+            String query = "SELECT m.title, m.year, m.director, " +
+                            "(SELECT GROUP_CONCAT(g2.name ORDER BY g2.name SEPARATOR ', ') " +
+                            " FROM genres_in_movies AS gm2 " +
+                            " JOIN genres AS g2 ON gm2.genreId = g2.id " +
+                            " WHERE gm2.movieId = m.id " +
+                            " LIMIT 3) AS genres, " +
+                            "(SELECT GROUP_CONCAT(s2.name ORDER BY s2.name SEPARATOR ', ') " +
+                            " FROM stars_in_movies AS sim2 " +
+                            " JOIN stars AS s2 ON sim2.starId = s2.id " +
+                            " WHERE sim2.movieId = m.id " +
+                            " LIMIT 3) AS stars, " +
+                            "r.rating " +
+                            "FROM movies AS m " +
+                            "JOIN ratings AS r ON r.movieId = m.id " +
                             "GROUP BY m.id, m.title, m.year, m.director, r.rating " +
                             "ORDER BY r.rating DESC " +
-                            "limit 20";
+                            "LIMIT 20";
 
             // Perform the query
             ResultSet rs = statement.executeQuery(query);
@@ -71,6 +76,8 @@ public class MoviesServlet extends HttpServlet {
                 String movie_title = rs.getString("title");
                 String movie_yr = rs.getString("year");
                 String movie_director = rs.getString("director");
+                String genres = rs.getString("genres");
+                String stars = rs.getString("stars");
                 String rating = rs.getString("rating");
 
                 // Create a JsonObject based on the data we retrieve from rs
@@ -79,6 +86,8 @@ public class MoviesServlet extends HttpServlet {
                 jsonObject.addProperty("movie_yr", movie_yr);
                 jsonObject.addProperty("movie_director", movie_director);
                 jsonObject.addProperty("rating", rating);
+                jsonObject.addProperty("stars", stars);
+                jsonObject.addProperty("genres", genres);
 
                 jsonArray.add(jsonObject);
             }
