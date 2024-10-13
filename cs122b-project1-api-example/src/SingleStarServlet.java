@@ -77,14 +77,14 @@ public class SingleStarServlet extends HttpServlet {
             // Iterate through each row of rs
             while (rs.next()) {
 
-                String starId = rs.getString("starId");
+                String starId = rs.getString("id");
                 String starName = rs.getString("name");
                 String starDob = rs.getString("birth_year");
-
-                String movieId = rs.getString("movieId");
-                String movieTitle = rs.getString("title");
-                String movieYear = rs.getString("year");
-                String movieDirector = rs.getString("director");
+                //String movies = rs.getString("movies");
+                String movieIds = rs.getString("movie_ids");
+                String movieTitle = rs.getString("movies");
+                //String movieYear = rs.getString("year");
+                //String movieDirector = rs.getString("director");
 
                 // Create a JsonObject based on the data we retrieve from rs
 
@@ -92,10 +92,11 @@ public class SingleStarServlet extends HttpServlet {
                 jsonObject.addProperty("star_id", starId);
                 jsonObject.addProperty("star_name", starName);
                 jsonObject.addProperty("star_dob", starDob);
-                jsonObject.addProperty("movie_id", movieId);
+                //jsonObject.addProperty("movies", movies);
+                jsonObject.addProperty("movie_ids", movieIds);
                 jsonObject.addProperty("movie_title", movieTitle);
-                jsonObject.addProperty("movie_year", movieYear);
-                jsonObject.addProperty("movie_director", movieDirector);
+                //jsonObject.addProperty("movie_year", movieYear);
+                //jsonObject.addProperty("movie_director", movieDirector);
 
                 jsonArray.add(jsonObject);
             }

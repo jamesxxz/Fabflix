@@ -53,18 +53,32 @@ public class SingleMovieServlet extends HttpServlet {
             // Get a connection from dataSource
 
             // Construct a query with parameter represented by "?"
-            String query = "SELECT m.id, m.title, m.year, m.director, sim.starId " +
-                            "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name SEPARATOR ', ') AS genres, " +
-                            "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ', ') AS stars, " +
-                            "r.rating " +
-                            "FROM movies m " +
-                            "JOIN ratings r ON m.id = r.movieId " +
-                            "LEFT JOIN genres_in_movies gim ON m.id = gim.movieId " +
-                            "LEFT JOIN genres g ON gim.genreId = g.id " +
-                            "LEFT JOIN stars_in_movies sim ON m.id = sim.movieId " +
-                            "LEFT JOIN stars s ON sim.starId = s.id " +
-                            "WHERE m.id = ? " +
-                            "GROUP BY m.id, m.title, m.year, m.director, r.rating";
+//            String query = "SELECT m.id, m.title, m.year, m.director, " +
+//                            "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name SEPARATOR ', ') AS genres, " +
+//                            "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ', ') AS stars, " +
+//                            "r.rating " +
+//                            "FROM movies m " +
+//                            "JOIN ratings r ON m.id = r.movieId " +
+//                            "LEFT JOIN genres_in_movies gim ON m.id = gim.movieId " +
+//                            "LEFT JOIN genres g ON gim.genreId = g.id " +
+//                            "LEFT JOIN stars_in_movies sim ON m.id = sim.movieId " +
+//                            "LEFT JOIN stars s ON sim.starId = s.id " +
+//                            "WHERE m.id = ? " +
+//                            "GROUP BY m.id, m.title, m.year, m.director, r.rating";
+//
+            String query = "SELECT m.id, m.title, m.year, m.director, " +
+                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name SEPARATOR ', ') AS genres, " +
+                    "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ', ') AS stars, " +
+                    "GROUP_CONCAT(DISTINCT s.id ORDER BY s.name SEPARATOR ', ') AS star_ids, " +
+                    "r.rating " +
+                    "FROM movies m " +
+                    "JOIN ratings r ON m.id = r.movieId " +
+                    "LEFT JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                    "LEFT JOIN genres g ON gim.genreId = g.id " +
+                    "LEFT JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                    "LEFT JOIN stars s ON sim.starId = s.id " +
+                    "WHERE m.id = ? " +
+                    "GROUP BY m.id, m.title, m.year, m.director, r.rating";
 
 
             // Declare our statement
@@ -88,8 +102,12 @@ public class SingleMovieServlet extends HttpServlet {
                 String genres = rs.getString("genres");
                 String stars = rs.getString("stars");
                 String rating = rs.getString("rating");
-                String starId = rs.getString("starId");
+                //String star_ids = rs.getString("star_ids");
+                String star_ids = rs.getString("star_ids") != null ? rs.getString("star_ids") : "";
+
                 // Create a JsonObject based on the data we retrieve from rs
+                System.out.println("Star IDs: " + star_ids);
+
 
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", movieId);
@@ -99,7 +117,8 @@ public class SingleMovieServlet extends HttpServlet {
                 jsonObject.addProperty("genres", genres);
                 jsonObject.addProperty("stars", stars);
                 jsonObject.addProperty("rating", rating);
-                jsonObject.addProperty("starId", starId);
+                jsonObject.addProperty("star_ids", star_ids);
+
                 jsonArray.add(jsonObject);
             }
             rs.close();
@@ -108,6 +127,7 @@ public class SingleMovieServlet extends HttpServlet {
             // Write JSON string to output
             out.write(jsonArray.toString());
             // Set response status to 200 (OK)
+            System.out.println("JSON Response: " + jsonArray.toString());
             response.setStatus(200);
 
         } catch (Exception e) {
