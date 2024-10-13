@@ -38,8 +38,9 @@ function getParameterByName(target) {
 
 function handleResult(resultData) {
     // 在控制台打印日志，用于调试，显示正在从 resultData 填充明星信息
-    console.log("handleResult: populating star info from resultData");
+    console.log("handleResult: populating star info from resultData!");
 
+    console.log(resultData);
     // 获取 HTML 页面中 id 为 "star_info" 的元素，用于填充明星信息
     let starInfoElement = jQuery("#star_info");
 

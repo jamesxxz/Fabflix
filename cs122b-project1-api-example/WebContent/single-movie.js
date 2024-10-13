@@ -24,13 +24,14 @@ function getParameterByName(target) {
  * @param resultData jsonObject
  */
 
-function processStars(starsString) {
+function processStars(starsString, resultData, i) {
     const starsArr = starsString.split(', ');
     const anchorTags = starsArr.map(star => {
-        return `<a href="single-star.html?id=">${star}</a>`;
+        return `<a href="single-star.html?id=${resultData[i]['starId']}">${star}</a>`;
     });
-    return anchorTags.join(',  ');
+    return anchorTags.join(', ');
 }
+
 function handleResult(resultData) {
 
     console.log("handleResult: populating movie info from resultData");
