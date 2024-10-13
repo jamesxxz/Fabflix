@@ -61,10 +61,12 @@ function handleResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // 从 resultData[0] 获取所有电影的标题，使用逗号加空格（", "）分隔，并将其拆分为数组
-    let movies = resultData[0]["movies"].split(", ");
+    let movies = resultData[0]["movie_title"].split(", ");
 
     // 从 resultData[0] 获取所有电影的 ID，同样使用逗号加空格分隔，拆分为数组
     let movieIds = resultData[0]["movie_ids"].split(", ");
+    //let movies = resultData[0]["movies"] ? resultData[0]["movies"].split(", ") : [];
+    //let movieIds = resultData[0]["movie_ids"] ? resultData[0]["movie_ids"].split(", ") : [];
 
     // 循环遍历 movies 数组中的每一个电影
     for (let i = 0; i < movies.length; i++) {
