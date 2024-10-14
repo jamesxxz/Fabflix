@@ -28,9 +28,10 @@ function processStars(starsString, starIdsString) {
     }
 
     const anchorTags = starsArr.map((star, index) => {
-        return `<a href="single-star.html?id=${starIdsArr[index]}">${star}</a>`;
+        return '<a href="single-star.html?id=' + starIdsArr[index] + '">' + star + '</a>';
     });
 
+    console.log(anchorTags);
     return anchorTags.join(', ');
 }
 
@@ -61,7 +62,7 @@ function handleMoviesResult(resultData) {
         rowHTML += "<th>" + resultData[i]["movie_yr"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
         rowHTML += "<th>" + resultData[i]["genres"] + "</th>";
-        rowHTML += processStars(resultData[i]["stars"], resultData[i]["starIds"]);
+        rowHTML += "<th>" + processStars(resultData[i]["stars"], resultData[i]["starIds"]) + "</th>";
         rowHTML += "<th>" + resultData[i]["rating"] + "</th>";
         rowHTML += "</tr>";
 
