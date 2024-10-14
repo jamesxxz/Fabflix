@@ -54,7 +54,7 @@ public class MoviesServlet extends HttpServlet {
                             "FROM genres_in_movies gim " +
                             "JOIN genres g ON gim.genreId = g.id)," +
                             "TopStars AS ( " +
-                            "SELECT s.name, sim.movieId, " +
+                            "SELECT s.name, sim.movieId, s.id, " +
                             "ROW_NUMBER() OVER (PARTITION BY sim.movieId ORDER BY s.name) AS starRank " +
                             "FROM stars_in_movies sim " +
                             "JOIN stars s ON sim.starId = s.id) " +
@@ -64,6 +64,8 @@ public class MoviesServlet extends HttpServlet {
                             "FROM TopGenres g WHERE g.movieId = m.id AND g.genreRank <= 3) AS genres, " +
                             "(SELECT GROUP_CONCAT(s.name SEPARATOR ', ') " +
                             "FROM TopStars s WHERE s.movieId = m.id AND s.starRank <= 3) AS stars, " +
+                            "(SELECT GROUP_CONCAT(s.id SEPARATOR ', ') " +
+                            "FROM TopStars s WHERE s.movieId = m.id AND s.starRank <= 3) AS starIds, " +
                             "r.rating " +
                             "FROM movies m " +
                             "JOIN ratings r ON m.id = r.movieId " +
@@ -84,6 +86,7 @@ public class MoviesServlet extends HttpServlet {
                 String genres = rs.getString("genres");
                 String stars = rs.getString("stars");
                 String rating = rs.getString("rating");
+                String starIds = rs.getString("starIds");
 
                 // Create a JsonObject based on the data we retrieve from rs
                 JsonObject jsonObject = new JsonObject();
@@ -94,6 +97,7 @@ public class MoviesServlet extends HttpServlet {
                 jsonObject.addProperty("genres", genres);
                 jsonObject.addProperty("stars", stars);
                 jsonObject.addProperty("rating", rating);
+                jsonObject.addProperty("starIds", starIds);
 
                 jsonArray.add(jsonObject);
             }

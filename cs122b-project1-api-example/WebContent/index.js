@@ -9,6 +9,31 @@
  */
 
 
+
+function processStars(starsString, starIdsString) {
+    const starsArr = starsString.split(', ');
+
+    // 如果 starIdsString 是 undefined 或 null，进行处理
+    if (!starIdsString) {
+        console.error("starIdsString is undefined or null.");
+        return starsArr.join(', ');  // 如果没有 star_ids，则只显示明星名字，不生成超链接
+    }
+
+    const starIdsArr = starIdsString.split(', ');
+
+    // 确保明星数量和ID数量匹配
+    if (starsArr.length !== starIdsArr.length) {
+        console.error("Stars and Star IDs count do not match.");
+        return starsArr.join(', ');
+    }
+
+    const anchorTags = starsArr.map((star, index) => {
+        return `<a href="single-star.html?id=${starIdsArr[index]}">${star}</a>`;
+    });
+
+    return anchorTags.join(', ');
+}
+
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
@@ -36,7 +61,7 @@ function handleMoviesResult(resultData) {
         rowHTML += "<th>" + resultData[i]["movie_yr"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
         rowHTML += "<th>" + resultData[i]["genres"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["stars"] + "</th>";
+        rowHTML += processStars(resultData[i]["stars"], resultData[i]["starIds"]);
         rowHTML += "<th>" + resultData[i]["rating"] + "</th>";
         rowHTML += "</tr>";
 
