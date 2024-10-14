@@ -49,7 +49,7 @@ function handleResult(resultData) {
     // "star_name" 是明星的名字，"star_dob" 是明星的出生日期（如果没有，则为 N/A）
     if (resultData.length > 0) {
         starInfoElement.append("<p>Star Name: " + resultData[0]["star_name"] + "</p>" +
-            "<p>Date Of Birth: " + resultData[0]["star_dob"] + "</p>");
+            "<p>Year Of Birth: " + resultData[0]["star_dob"] + "</p>");
     } else {
         starInfoElement.append("<p>No data available for this star.</p>");
     }

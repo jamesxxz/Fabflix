@@ -1,0 +1,91 @@
+/* General body styling */
+body {
+    background-color: #f4f7f6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Page title styling */
+h1 {
+    color: #333;
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+/* Movie information header */
+h3 {
+    color: #555;
+    text-align: center;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+/* Table styling */
+.table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table thead th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.table tbody td {
+    text-align: center;
+    font-size: 1.1em;
+    padding: 10px;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+/* Button styling */
+.btn-primary {
+    display: block;
+    width: 200px;
+    margin: 30px auto;
+    background-color: #007BFF;
+    border-color: #007BFF;
+    font-size: 1.1em;
+    padding: 10px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design for small screens */
+@media (max-width: 768px) {
+    .table {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h3 {
+        font-size: 1.5em;
+    }
+
+    .btn-primary {
+        width: 100%;
+        font-size: 1em;
+    }
+}
