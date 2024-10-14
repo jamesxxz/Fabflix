@@ -74,10 +74,10 @@ function handleResult(resultData) {
         let rowHTML = "<tr>";
 
         // 第一个单元格显示明星的名字
-        rowHTML += "<td>" + resultData[0]["star_name"] + "</td>";
+        //rowHTML += "<td>" + resultData[0]["star_name"] + "</td>";
 
         // 第二个单元格显示明星的出生年份（或 N/A）
-        rowHTML += "<td>" + resultData[0]["star_dob"] + "</td>";
+        //rowHTML += "<td>" + resultData[0]["star_dob"] + "</td>";
 
         // 第三个单元格显示电影的名字，并将电影名设为超链接，点击时跳转到对应的 Single Movie 页面
         // 使用 movieIds[i] 创建超链接，链接到 single-movie.html 页面，并附带电影 ID 作为参数
