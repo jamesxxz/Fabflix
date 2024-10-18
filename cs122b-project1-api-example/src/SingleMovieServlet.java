@@ -106,8 +106,6 @@ public class SingleMovieServlet extends HttpServlet {
                 String star_ids = rs.getString("star_ids") != null ? rs.getString("star_ids") : "";
 
                 // Create a JsonObject based on the data we retrieve from rs
-                System.out.println("Star IDs: " + star_ids);
-
 
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", movieId);
@@ -127,7 +125,6 @@ public class SingleMovieServlet extends HttpServlet {
             // Write JSON string to output
             out.write(jsonArray.toString());
             // Set response status to 200 (OK)
-            System.out.println("JSON Response: " + jsonArray.toString());
             response.setStatus(200);
 
         } catch (Exception e) {
