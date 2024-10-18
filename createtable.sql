@@ -1,3 +1,5 @@
+CREATE DATABASE moviedb;
+USE moviedb;
 DROP TABLE IF EXISTS stars_in_movies;
 DROP TABLE IF EXISTS genres_in_movies;
 DROP TABLE IF EXISTS ratings;
