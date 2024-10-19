@@ -10,13 +10,21 @@
 </head>
 <body>
 <h1>Customer Login</h1>
-<form id="loginForm" action="customerLogin" >
+<form id="loginForm">
     <div class="login">
-        <div>Email: <input type="email" id="email" name="email" required></div>
-        <div>Password: <input type="password" id="password" name="password" required></div>
-        <input type="submit" value="Sign in" class="submit-btn">
+        <div>
+            <label for="email">Email: </label>
+            <input name="email" type="email" id="email" required>
+        </div>
+        <div>
+            <label for="password">Password: </label>
+            <input name="password" type="password" id="password" required>
+        </div>
+        <input type="submit" id="submit" value="Login" class="submit-btn">
     </div>
 </form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="login.js"></script>
 </body>
 </html>
