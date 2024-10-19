@@ -1,0 +1,9 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.submit-btn {
+    width: 60px;
+}
