@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
 
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.addProperty("redirect", true);  // Signal the client to redirect
-        jsonResponse.addProperty("redirectUrl", "index.html");  // The URL to redirect to
+        jsonResponse.addProperty("redirectUrl", "movielist.html");  // The URL to redirect to
         PrintWriter out = response.getWriter();
 
         out.write(jsonResponse.toString());
