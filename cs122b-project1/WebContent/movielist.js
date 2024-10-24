@@ -83,3 +83,4 @@ jQuery.ajax({
     url: "api/movies", // Setting request url, which is mapped by MoivesServlet in Movies.java
     success: (resultData) => handleMoviesResult(resultData) // Setting callback function to handle data returned successfully by the MoivesServlet
 });
+
