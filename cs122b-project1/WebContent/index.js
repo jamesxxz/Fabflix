@@ -77,8 +77,8 @@ function populateAlphaList(containerId) {
     container.append('<a href="movielist.html?input=alpha:*">*</a>');
 }
 
-// 提交搜索表单并处理结果
 function handleSearch(event) {
+    console.log("Search form submitted.");
     event.preventDefault();
     console.log("Submitting search form");
 
@@ -87,24 +87,34 @@ function handleSearch(event) {
         url: "api/index",
         data: search.serialize(),
         success: handleSearchResult,
+        error: (xhr, status, error) => {
+            console.error(`Search failed: ${status}, ${error}`);
+        }
     });
 }
 
-// 处理搜索结果并跳转到电影列表
 function handleSearchResult(resultDataString) {
     let resultData = JSON.parse(resultDataString);
-    let newURL = buildSearchURL(resultData);
-    window.location.replace(`movielist.html?${newURL}`);
+    let newURL = "input=";
+
+    if (resultData["sort_title"]) {
+        newURL += "title:" + resultData["sort_title"] + ":";
+    }
+    if (resultData["sort_year"]) {
+        newURL += "year:" + resultData["sort_year"] + ":";
+    }
+    if (resultData["sort_director"]) {
+        newURL += "director:" + resultData["sort_director"] + ":";
+    }
+    if (resultData["sort_name"]) {
+        newURL += "name:" + resultData["sort_name"] + ":";
+    }
+
+    console.log("Redirecting to:", `movielist.html?num=10&page=1&sort=r0t1&${newURL}`);
+    window.location.replace(`movielist.html?num=10&page=1&sort=r0t1&${newURL}`);
 }
 
-// 构建搜索结果的 URL
-function buildSearchURL(data) {
-    let params = ["sort_title", "sort_year", "sort_director", "sort_name"]
-        .filter(key => data[key])
-        .map(key => `${key.split("_")[1]}:${data[key]}`)
-        .join(":");
-    return `num=10&page=1&sort=r0t1&input=${params}`;
-}
+
 
 // 获取初始数据并填充导航
 jQuery.ajax({
@@ -115,6 +125,7 @@ jQuery.ajax({
 });
 
 // 绑定搜索表单提交事件
+console.log("Binding search form submit event.");
 search.submit(handleSearch);
 
 
