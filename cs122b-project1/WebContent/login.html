@@ -6,25 +6,25 @@
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="login.css">
 
-    <title>Login</title>
+    <title>Login to Fablix</title>
 </head>
 <body>
 <h1>Customer Login</h1>
-<form id="loginForm">
-    <div class="login">
-        <div>
-            <label for="email">Email: </label>
-            <input name="email" type="email" id="email" required>
-        </div>
-        <div>
-            <label for="password">Password: </label>
-            <input name="password" type="password" id="password" required>
-        </div>
-        <input type="submit" id="submit" value="Login" class="submit-btn">
-    </div>
+<!-- Set the method to POST to avoid showing the username/password in the URL
+     The default action is disabled to allow your own implementation. -->
+<form id="loginForm" method="post" action="#">
+    <label>Username: </label>
+    <input name="email" type="email" id="email" required>
+    <br>
+    <label>Password: </label>
+    <input name="password" type="password" id="password" required>
+    <br>
+    <input type="submit" id="submit" value="Login" class="submit-btn">
 </form>
 
+<div id="login_error_message"></div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="login.js"></script>
+<script src="./login.js"></script>
 </body>
 </html>
