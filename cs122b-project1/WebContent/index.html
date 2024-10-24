@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CPDD's Movie Store</title>
+
+    <!-- 引入 JS 和 CSS 资源 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.7/jquery.autocomplete.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- 引入自定义 CSS 文件 -->
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2503/2503508.png" />
+</head>
+
+<body>
+
+<!-- 顶部导航栏 -->
+<div class="header_nav">
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Movies</a></li>
+        <li><a href="#">Genres</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</div>
+
+<!-- 页面标题 -->
+<div>
+    <h1>CPPD's Movie Store</h1>
+</div>
+
+<!-- 搜索表单 -->
+<div class="wrap">
+    <form id="search" class="searchContainer">
+        <input type="text" class="searchTerm" placeholder="Search Movie By Title" name="sort_title" id="autocomplete">
+
+        <div class="searchRow">
+            <input type="text" class="searchTermRow" placeholder="Year" name="sort_year" inputmode="numeric">
+            <input type="text" class="searchTermRow" placeholder="Director" name="sort_director">
+            <input type="text" class="searchTermRow" placeholder="Star's Name" name="sort_name">
+        </div>
+
+        <button type="submit" class="searchButton">
+            <i class="fa fa-search"></i> Search
+        </button>
+    </form>
+</div>
+
+<!-- 选项卡导航 -->
+<div class="nav-container">
+    <div class="tabs">
+        <input type="radio" id="tab-1" name="tabs" checked>
+        <label class="label" for="tab-1">Browse by Genre</label>
+        <div class="panel" id="genre_body">
+            <p>Genre content goes here...</p>
+        </div>
+
+        <input type="radio" id="tab-2" name="tabs">
+        <label class="label" for="tab-2">Browse by Alphanumeric</label>
+        <div class="panel" id="alpha_body">
+            <p>Alphanumeric content goes here...</p>
+        </div>
+    </div>
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>
