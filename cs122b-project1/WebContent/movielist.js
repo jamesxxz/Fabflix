@@ -31,7 +31,6 @@ function processStars(starsString, starIdsString) {
         return '<a href="single-star.html?id=' + starIdsArr[index] + '">' + star + '</a>';
     });
 
-    console.log(anchorTags);
     return anchorTags.join(', ');
 }
 
@@ -71,17 +70,11 @@ function handleMoviesResult(resultData) {
     }
 }
 
-// 处理搜索表单提交，发送 AJAX 请求
-function handleSearch(event) {
-    event.preventDefault();
-
-    const searchParams = $("#search_form").serialize();  // 序列化表单数据
-    fetchMovieList(searchParams);  // 发送请求并更新电影列表
-}
-
 // 通过 AJAX 请求获取电影列表数据
 function fetchMovieList(params = "") {
     const url = params ? `api/movies?${params}` : "api/movies";
+    console.log(url);
+
     jQuery.ajax({
         dataType: "json",
         method: "GET",
@@ -92,14 +85,12 @@ function fetchMovieList(params = "") {
 
 // 初始化搜索和导航逻辑
 function initializePage() {
-    // 绑定搜索表单提交事件
-    $("#search_form").submit(handleSearch);
 
     // 渲染导航链接
     const homeElement = $("#home");
-    homeElement.append('<li><a href="index.html">Home</a></li>');
-    homeElement.append('<li><a href="shopping-cart.html">Check Out</a></li>');
-    homeElement.append('<li><a href="login.html">Log Out</a></li>');
+    // homeElement.append('<li><a href="index.html">Home</a></li>');
+    // homeElement.append('<li><a href="shopping-cart.html">Check Out</a></li>');
+    // homeElement.append('<li><a href="login.html">Log Out</a></li>');
 
     // 获取 URL 中的参数，并加载对应的电影列表
     const num = getParameterByName('num') || 10;

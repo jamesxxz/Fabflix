@@ -16,7 +16,7 @@ function handleSuccessLogin(resData) {
 function handleLoginSubmit(logInEvent) {
 
     logInEvent.preventDefault();  // prevent redirect of page
-    console.log(loginForm.serialize());
+
     $.ajax(
         "api/login", {
             method: "POST",

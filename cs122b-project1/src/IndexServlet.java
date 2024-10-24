@@ -24,8 +24,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         try {
-            InitialContext ctx = new InitialContext();
-            dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
         } catch (NamingException e) {
             log("Error during DataSource lookup:", e);
         }
@@ -68,8 +67,7 @@ public class IndexServlet extends HttpServlet {
         addPropertyIfNotNull(requestData, "sort_year", request.getParameter("sort_year"));
         addPropertyIfNotNull(requestData, "sort_director", request.getParameter("sort_director"));
         addPropertyIfNotNull(requestData, "sort_name", request.getParameter("sort_name"));
-
-        log("Received POST request data: " + requestData.toString());
+        System.out.println(requestData);
 
         response.getWriter().write(requestData.toString());
     }
