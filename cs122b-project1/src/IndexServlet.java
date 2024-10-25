@@ -67,7 +67,6 @@ public class IndexServlet extends HttpServlet {
         addPropertyIfNotNull(requestData, "sort_year", request.getParameter("sort_year"));
         addPropertyIfNotNull(requestData, "sort_director", request.getParameter("sort_director"));
         addPropertyIfNotNull(requestData, "sort_name", request.getParameter("sort_name"));
-        System.out.println(requestData);
 
         response.getWriter().write(requestData.toString());
     }

@@ -17,7 +17,7 @@ function handleGenreResult(resultData) {
 function populateList(containerId, data, key) {
     let container = $(containerId);
     data.forEach((item) => {
-        container.append(`<a href="movielist.html?input=${key}:${item[key]}">${item[key]}</a>`);
+        container.append(`<a href="movielist.html?num=10&page=1&sort=r0t1&input=${key}:${item[key]}">${item[key]}</a>`);
     });
 }
 
@@ -25,13 +25,13 @@ function populateList(containerId, data, key) {
 function populateAlphaList(containerId) {
     let container = $(containerId);
     for (let i = 0; i <= 9; i++) {
-        container.append(`<a href="movielist.html?input=alpha:${i}">${i}</a>`);
+        container.append(`<a href="movielist.html?num=10&page=1&sort=r0t1&input=alpha:${i}">${i}</a>`);
     }
     for (let i = 65; i <= 90; i++) {
         let letter = String.fromCharCode(i);
-        container.append(`<a href="movielist.html?input=alpha:${letter}">${letter}</a>`);
+        container.append(`<a href="movielist.html?num=10&page=1&sort=r0t1&input=alpha:${letter}">${letter}</a>`);
     }
-    container.append('<a href="movielist.html?input=alpha:*">*</a>');
+    container.append('<a href="movielist.html?num=10&page=1&sort=r0t1&input=alpha:*">*</a>');
 }
 
 function handleSearch(event) {

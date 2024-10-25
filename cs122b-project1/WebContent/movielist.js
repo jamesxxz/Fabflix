@@ -19,8 +19,6 @@ function processStars(starsString, starIdsString) {
     }
 
     const starIdsArr = starIdsString.split(', ');
-    console.log(starsArr);
-    console.log(starIdsArr);
 
     // 确保明星数量和ID数量匹配
     if (starsArr.length !== starIdsArr.length) {
@@ -84,7 +82,7 @@ function fetchMovieList(params = "") {
 }
 
 function handleNumMoviesChange() {
-    $('#numMovies').change(function () {
+    numMovies.change(function () {
         const selectedNums = $(this).val();
         const urlObj = new URL(window.location.href);
         const params = new URLSearchParams(urlObj.search);
@@ -96,7 +94,25 @@ function handleNumMoviesChange() {
 }
 
 function handlePrevNextPagination() {
-    $('#prev')
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    const curPage = getParameterByName('page')
+    $('#prev').click(function () {
+        if (parseInt(curPage) - 1 === 0) {
+            params.set('page', "1");
+        } else {
+            params.set('page', (parseInt(curPage) - 1).toString());
+            url.search = params.toString();
+            const updatedUrl = url.toString();
+            window.location.replace(updatedUrl);
+        }
+    });
+    $('#next').click(function () {
+        params.set('page', (parseInt(curPage) + 1).toString());
+        url.search = params.toString();
+        const updatedUrl = url.toString();
+        window.location.replace(updatedUrl);
+    });
 }
 
 // 初始化搜索和导航逻辑
@@ -111,15 +127,16 @@ function initializePage() {
 
     // 获取 URL 中的参数，并加载对应的电影列表
     const num = getParameterByName('num') || 10;
-    const page = getParameterByName('page') || 1;
+    let page = getParameterByName('page') || 1;
     const sort = getParameterByName('sort') || 'r0t1';
     const input = getParameterByName('input') || '';
 
-    $('#numMovies').val(num);
+    numMovies.val(num);
 
     fetchMovieList(`num=${num}&page=${page}&sort=${sort}&input=${input}`);
 
     handleNumMoviesChange();
+    handlePrevNextPagination();
 }
 
 // 获取 URL 参数
