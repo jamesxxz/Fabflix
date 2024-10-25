@@ -8,7 +8,7 @@
  *      2. Populate the data to correct html elements.
  */
 
-
+let numMovies = $("#numMovies");
 
 function processStars(starsString, starIdsString) {
     const starsArr = starsString.split(', ');
@@ -46,8 +46,7 @@ function handleMoviesResult(resultData) {
     let movieTableBodyElement = jQuery("#movie_table_body");
 
     // Iterate through resultData, no more than 10 entries
-    for (let i = 0; i < Math.min(20, resultData.length); i++) {
-
+    for (let i = 0; i < resultData.length; i++) {
         // Concatenate the html tags with resultData jsonObject
         let rowHTML = "";
         rowHTML += "<tr>";
@@ -83,6 +82,19 @@ function fetchMovieList(params = "") {
     });
 }
 
+function handleNumMoviesChange() {
+    $('#numMovies').change(function () {
+        const selectedNums = $(this).val();
+        const urlObj = new URL(window.location.href);
+        const params = new URLSearchParams(urlObj.search);
+
+        params.set('num', selectedNums);
+        urlObj.search = params.toString();
+        const updatedUrl = urlObj.toString();
+        window.location.replace(updatedUrl);
+    });
+}
+
 // 初始化搜索和导航逻辑
 function initializePage() {
 
@@ -97,7 +109,12 @@ function initializePage() {
     const page = getParameterByName('page') || 1;
     const sort = getParameterByName('sort') || 'r0t1';
     const input = getParameterByName('input') || '';
+
+    $('#numMovies').val(num);
+
     fetchMovieList(`num=${num}&page=${page}&sort=${sort}&input=${input}`);
+
+    handleNumMoviesChange();
 }
 
 // 获取 URL 参数
