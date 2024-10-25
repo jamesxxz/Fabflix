@@ -129,6 +129,7 @@
 //
 //    }
 //}
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import jakarta.servlet.ServletConfig;
@@ -283,6 +284,13 @@ public class MoviesServlet extends HttpServlet {
                 case "genre":
                     inputQuery.append("g.name = '").append(value).append("'");
                     break;
+                case "alpha":
+                    if (Objects.equals(value, "*")) {
+                        inputQuery.append("LEFT(m.title, 1) REGEXP '[^a-zA-Z0-9]'");
+                    } else {
+                        inputQuery.append("LEFT(m.title, 1) = '").append(value).append("'");
+
+                    }
             }
         }
         return inputQuery.toString();
