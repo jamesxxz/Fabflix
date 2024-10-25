@@ -3,11 +3,13 @@ import com.google.gson.JsonObject;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,8 +56,8 @@ public class SingleStarServlet extends HttpServlet {
 
             // Construct a query with parameter represented by "?"
             String query = "SELECT s.id, s.name, COALESCE(s.birthYear, 'N/A') AS birth_year, " +
-                    "GROUP_CONCAT(m.title ORDER BY m.title SEPARATOR ', ') AS movies, " +
-                    "GROUP_CONCAT(m.id ORDER BY m.title SEPARATOR ', ') AS movie_ids " +
+                    "GROUP_CONCAT(m.title ORDER BY m.year DESC, m.title SEPARATOR ', ') AS movies, " +
+                    "GROUP_CONCAT(m.id ORDER BY m.year DESC, m.title SEPARATOR ', ') AS movie_ids " +
                     "FROM stars s " +
                     "LEFT JOIN stars_in_movies sim ON s.id = sim.starId " +
                     "LEFT JOIN movies m ON sim.movieId = m.id " +
@@ -96,7 +98,6 @@ public class SingleStarServlet extends HttpServlet {
                 //jsonObject.addProperty("movies", movies);
                 jsonObject.addProperty("movie_ids", movieIds);
                 jsonObject.addProperty("movie_title", movieTitle);
-                //jsonObject.addProperty("movie_year", movieYear);
                 //jsonObject.addProperty("movie_director", movieDirector);
 
                 jsonArray.add(jsonObject);
