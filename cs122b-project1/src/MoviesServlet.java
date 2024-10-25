@@ -184,27 +184,19 @@ public class MoviesServlet extends HttpServlet {
 
         try (Connection conn = dataSource.getConnection()) {
             // 构建 SQL 查询
-            String query = "WITH TopGenres AS ( " +
-                    "SELECT g.name, gim.movieId, " +
-                    "ROW_NUMBER() OVER (PARTITION BY gim.movieId ORDER BY g.name) AS genreRank " +
-                    "FROM genres_in_movies gim " +
-                    "JOIN genres g ON gim.genreId = g.id)," +
-                    "TopStars AS ( " +
-                    "SELECT s.name, sim.movieId, s.id, " +
-                    "ROW_NUMBER() OVER (PARTITION BY sim.movieId ORDER BY s.name) AS starRank " +
-                    "FROM stars_in_movies sim " +
-                    "JOIN stars s ON sim.starId = s.id) " +
-
-                    "SELECT m.id, m.title, m.year, m.director, " +
-                    "(SELECT GROUP_CONCAT(g.name SEPARATOR ', ') " +
-                    "FROM TopGenres g WHERE g.movieId = m.id AND g.genreRank <= 3) AS genres, " +
-                    "(SELECT GROUP_CONCAT(s.name SEPARATOR ', ') " +
-                    "FROM TopStars s WHERE s.movieId = m.id AND s.starRank <= 3) AS stars, " +
-                    "(SELECT GROUP_CONCAT(s.id SEPARATOR ', ') " +
-                    "FROM TopStars s WHERE s.movieId = m.id AND s.starRank <= 3) AS starIds, " +
+            String query = "SELECT m.id, m.title, m.year, m.director, " +
+                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') AS genres, " +
+                    "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name ASC SEPARATOR ', ') AS stars, " +
+                    "GROUP_CONCAT(DISTINCT s.id ORDER BY s.name ASC SEPARATOR ', ') AS starIds, " +
                     "r.rating " +
                     "FROM movies m " +
-                    "JOIN ratings r ON m.id = r.movieId " +
+                    "LEFT JOIN ratings r ON m.id = r.movieId " +
+                    "JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                    "JOIN genres g ON gim.genreId = g.id " +
+                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                    "JOIN stars s ON sim.starId = s.id " +
+                    "WHERE " + inputQuery +
+                    " GROUP BY m.id, m.title, m.year, m.director, r.rating " +
                     "ORDER BY " + sortOrder +
                     " LIMIT ? OFFSET ?";
 
@@ -216,19 +208,44 @@ public class MoviesServlet extends HttpServlet {
 
             // 执行查询
             ResultSet rs = statement.executeQuery();
-
             // 将查询结果转换为 JSON 数组
             JsonArray jsonArray = new JsonArray();
             while (rs.next()) {
+
+                String[] genre = rs.getString("genres").split(", ");
+                String[] star = rs.getString("stars").split(", ");
+                String[] starId = rs.getString("starIds").split(", ");
+
+                String genres = "";
+                if (genre.length > 3) {
+                    genres = genre[0] + ", " + genre[1] + ", " + genre[2];
+                } else {
+                    genres = rs.getString("genres");
+                }
+
+                String stars = "";
+                if (star.length > 3) {
+                    stars = star[0] + ", " + star[1] + ", " + star[2];
+                } else {
+                    stars = rs.getString("stars");
+                }
+
+                String starIds = "";
+                if (starId.length > 3) {
+                    starIds = starId[0] + ", " + starId[1] + ", " + starId[2];
+                } else {
+                    starIds = rs.getString("starIds");
+                }
+
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", rs.getString("id"));
                 jsonObject.addProperty("movie_title", rs.getString("title"));
                 jsonObject.addProperty("movie_yr", rs.getString("year"));
                 jsonObject.addProperty("movie_director", rs.getString("director"));
-                jsonObject.addProperty("genres", rs.getString("genres"));
-                jsonObject.addProperty("stars", rs.getString("stars"));
+                jsonObject.addProperty("genres", genres);
+                jsonObject.addProperty("stars", stars);
+                jsonObject.addProperty("starIds", starIds);
                 jsonObject.addProperty("rating", rs.getString("rating"));
-                jsonObject.addProperty("starIds", rs.getString("starIds"));
                 jsonArray.add(jsonObject);
             }
 

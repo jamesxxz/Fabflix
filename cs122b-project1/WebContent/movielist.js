@@ -12,7 +12,6 @@ let numMovies = $("#numMovies");
 
 function processStars(starsString, starIdsString) {
     const starsArr = starsString.split(', ');
-
     // 如果 starIdsString 是 undefined 或 null，进行处理
     if (!starIdsString) {
         console.error("starIdsString is undefined or null.");
@@ -20,6 +19,8 @@ function processStars(starsString, starIdsString) {
     }
 
     const starIdsArr = starIdsString.split(', ');
+    console.log(starsArr);
+    console.log(starIdsArr);
 
     // 确保明星数量和ID数量匹配
     if (starsArr.length !== starIdsArr.length) {
