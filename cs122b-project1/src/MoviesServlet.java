@@ -184,20 +184,30 @@ public class MoviesServlet extends HttpServlet {
 
         try (Connection conn = dataSource.getConnection()) {
             // 构建 SQL 查询
-            String query = "SELECT m.id, m.title, m.year, m.director, " +
-                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC) AS genres, " +
-                    "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name ASC) AS stars, " +
+            String query = "WITH TopGenres AS ( " +
+                    "SELECT g.name, gim.movieId, " +
+                    "ROW_NUMBER() OVER (PARTITION BY gim.movieId ORDER BY g.name) AS genreRank " +
+                    "FROM genres_in_movies gim " +
+                    "JOIN genres g ON gim.genreId = g.id)," +
+                    "TopStars AS ( " +
+                    "SELECT s.name, sim.movieId, s.id, " +
+                    "ROW_NUMBER() OVER (PARTITION BY sim.movieId ORDER BY s.name) AS starRank " +
+                    "FROM stars_in_movies sim " +
+                    "JOIN stars s ON sim.starId = s.id) " +
+
+                    "SELECT m.id, m.title, m.year, m.director, " +
+                    "(SELECT GROUP_CONCAT(g.name SEPARATOR ', ') " +
+                    "FROM TopGenres g WHERE g.movieId = m.id AND g.genreRank <= 3) AS genres, " +
+                    "(SELECT GROUP_CONCAT(s.name SEPARATOR ', ') " +
+                    "FROM TopStars s WHERE s.movieId = m.id AND s.starRank <= 3) AS stars, " +
+                    "(SELECT GROUP_CONCAT(s.id SEPARATOR ', ') " +
+                    "FROM TopStars s WHERE s.movieId = m.id AND s.starRank <= 3) AS starIds, " +
                     "r.rating " +
                     "FROM movies m " +
-                    "LEFT JOIN ratings r ON m.id = r.movieId " +
-                    "JOIN genres_in_movies gim ON m.id = gim.movieId " +
-                    "JOIN genres g ON gim.genreId = g.id " +
-                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +
-                    "JOIN stars s ON sim.starId = s.id " +
-                    "WHERE " + inputQuery +
-                    " GROUP BY m.id, m.title, m.year, m.director, r.rating " +
+                    "JOIN ratings r ON m.id = r.movieId " +
                     "ORDER BY " + sortOrder +
                     " LIMIT ? OFFSET ?";
+
 
             // 准备查询语句
             PreparedStatement statement = conn.prepareStatement(query);
@@ -218,6 +228,7 @@ public class MoviesServlet extends HttpServlet {
                 jsonObject.addProperty("genres", rs.getString("genres"));
                 jsonObject.addProperty("stars", rs.getString("stars"));
                 jsonObject.addProperty("rating", rs.getString("rating"));
+                jsonObject.addProperty("starIds", rs.getString("starIds"));
                 jsonArray.add(jsonObject);
             }
 

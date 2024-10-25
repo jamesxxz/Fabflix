@@ -17,13 +17,19 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="movielist.css">
 
     <title>Movie List</title>
 </head>
 <body>
 
 
-<h1>Top 20 Movies</h1>
+<h1>List of Movies</h1>
+
+<div class="pagination">
+    <a href="#" id="prev">&laquo; Prev</a>
+    <a href="#" id="next">Next &raquo;</a>
+</div>
 
 <label for="numMovies">Number of Movies:</label>
 <select name="numMovies" id="numMovies">

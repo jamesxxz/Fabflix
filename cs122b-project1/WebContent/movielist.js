@@ -87,7 +87,6 @@ function handleNumMoviesChange() {
         const selectedNums = $(this).val();
         const urlObj = new URL(window.location.href);
         const params = new URLSearchParams(urlObj.search);
-
         params.set('num', selectedNums);
         urlObj.search = params.toString();
         const updatedUrl = urlObj.toString();
@@ -95,7 +94,12 @@ function handleNumMoviesChange() {
     });
 }
 
+function handlePrevNextPagination() {
+    $('#prev')
+}
+
 // 初始化搜索和导航逻辑
+
 function initializePage() {
 
     // 渲染导航链接
