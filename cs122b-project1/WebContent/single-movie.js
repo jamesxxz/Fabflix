@@ -89,6 +89,13 @@ function processGenres(genreString) {
     return anchorTags.join(', ');
 }
 
+function handleReturnToPrevMovieList() {
+    $("#return-to-movies-btn").click(function () {
+            window.location.href = sessionStorage.getItem("prevMovieListURL");
+        }
+    );
+}
+
 
 async function handleResult(resultData) {
 
@@ -124,3 +131,5 @@ jQuery.ajax({
     url: "api/single-movie?id=" + movieId, // Setting request url, which is mapped by MoviesServlet in Movies.java
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleMovieServlet
 });
+
+handleReturnToPrevMovieList();

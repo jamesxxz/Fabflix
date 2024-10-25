@@ -36,6 +36,13 @@ function getParameterByName(target) {
  * @param resultData jsonObject
  */
 
+function handleReturnToPrevMovieList() {
+    $("#return-to-movies-btn").click(function () {
+            window.location.href = sessionStorage.getItem("prevMovieListURL");
+        }
+    );
+}
+
 function handleResult(resultData) {
     // 在控制台打印日志，用于调试，显示正在从 resultData 填充明星信息
     console.log("handleResult: populating star info from resultData!");
@@ -106,3 +113,5 @@ jQuery.ajax({
     url: "api/single-star?id=" + starId, // Setting request url, which is mapped by StarsServlet in Stars.java
     success: (resultData) => handleResult(resultData) // Setting callback function to handle data returned successfully by the SingleStarServlet
 });
+
+handleReturnToPrevMovieList();

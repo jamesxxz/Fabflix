@@ -66,6 +66,7 @@ function handleMoviesResult(resultData) {
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);
     }
+    sessionStorage.setItem("prevMovieListURL", window.location.href);
 }
 
 // 通过 AJAX 请求获取电影列表数据
