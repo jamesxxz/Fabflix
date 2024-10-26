@@ -30,6 +30,15 @@ function handlePaymentResult(resultDataString) {
 function submitPaymentForm(formSubmitEvent) {
     console.log("submit Payment form");
     formSubmitEvent.preventDefault();
+    let expDate = $("#expDate").val();
+    if (!expDate) {
+        $("#payment_error_message").text("Expiration date is required.");
+        return;
+    }
+
+    // 打印 expDate 以确保格式正确
+    console.log("Expiration Date:", expDate);
+
 
     $.ajax({
         url: "api/payment",
