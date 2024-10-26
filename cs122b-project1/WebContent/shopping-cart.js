@@ -3,7 +3,8 @@ function handleResult() {
     console.log(allMoviesInCart);
 
     let cartTableElement = jQuery('#cart_table_body');
-
+    let totalPriceElement = jQuery('#total_price');
+    let totalMoviePrice = 0;
     for (const [movieTitle, movieQuantity] of Object.entries(allMoviesInCart)) {
         let rowHTML = "";
         rowHTML += "<tr>";
@@ -17,9 +18,11 @@ function handleResult() {
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
-        console.log(rowHTML);
         cartTableElement.append(rowHTML);
+        totalMoviePrice += movieQuantity * 20
     }
+    totalPriceElement.text("Total Price: $" + totalMoviePrice);
+
 }
 
 function deleteMovie(movieTitle) {
@@ -46,7 +49,14 @@ function minusMovies(movieTitle) {
     }
 }
 
+function handleToPaymentPage() {
+    $('#toPaymentBtn').click(function () {
+        window.location.replace("payment.html")
+    })
+}
+
 handleResult();
+handleToPaymentPage();
 
 // $.ajax({
 //     dataType: "json",
