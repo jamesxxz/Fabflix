@@ -172,6 +172,40 @@ function handlePrevNextPagination() {
 }
 
 // 初始化搜索和导航逻辑
+function updateSort(sortValue) {
+    let currentUrl = window.location.href;
+    currentUrl = updateQueryStringParameter(currentUrl, "sort", sortValue);
+    window.location.href = currentUrl;
+}
+
+function updateQueryStringParameter(uri, key, value) {
+    const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    const separator = uri.indexOf("?") !== -1 ? "&" : "?";
+    if (uri.match(re)) {
+        return uri.replace(re, "$1" + key + "=" + value + "$2");
+    } else {
+        return uri + separator + key + "=" + value;
+    }
+}
+
+// 使用 JavaScript 动态填充排序选项
+function populateSortOptions() {
+    const sortNav = jQuery("#sort_nav");
+    const sortOptions = [
+        { id: 't1r0', text: 'Title ↑ Rating ↓' },
+        { id: 't0r0', text: 'Title ↓ Rating ↑' },
+        { id: 't1r1', text: 'Title ↑ Rating ↑' },
+        { id: 't0r1', text: 'Title ↓ Rating ↓' },
+        { id: 'r1t0', text: 'Rating ↑ Title ↓' },
+        { id: 'r0t1', text: 'Rating ↓ Title ↑' }
+    ];
+
+    sortOptions.forEach(option => {
+        const li = `<li><a href="#" onclick="updateSort('${option.id}')">${option.text}</a></li>`;
+        sortNav.append(li);
+    });
+}
+
 
 function initializePage() {
 
@@ -201,8 +235,32 @@ function getParameterByName(name) {
     return url.searchParams.get(name);
 }
 
+// 当用户选择排序选项时触发更新
+document.getElementById('sortOptions').addEventListener('change', (event) => {
+    const sortValue = event.target.value;
+    updateSort(sortValue);
+});
+
+function updateSort(sortValue) {
+    let currentUrl = window.location.href;
+    currentUrl = updateQueryStringParameter(currentUrl, "sort", sortValue);
+    window.location.href = currentUrl;
+}
+
+function updateQueryStringParameter(uri, key, value) {
+    const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    const separator = uri.indexOf("?") !== -1 ? "&" : "?";
+    if (uri.match(re)) {
+        return uri.replace(re, "$1" + key + "=" + value + "$2");
+    } else {
+        return uri + separator + key + "=" + value;
+    }
+}
+
 // 初始化页面
 initializePage();
+// 在页面加载时调用
+populateSortOptions();
 
 //
 // /**
