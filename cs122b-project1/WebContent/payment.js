@@ -1,16 +1,29 @@
-$(document).ready(function() {
+// $(document).ready(function() {
+//
+//     let cartItems = JSON.parse(sessionStorage.getItem("moviesInCart")) || [];
+//     let totalPrice = 0;
+//
+//
+//     cartItems.forEach(item => {
+//         totalPrice += item.price * item.quantity;
+//     });
+//
+//
+//     $("#totalPrice").text(`$${totalPrice.toFixed(2)}`);
+// });
 
-    let cartItems = JSON.parse(sessionStorage.getItem("moviesInCart")) || [];
+$(document).ready(function () {
+    const allMoviesInCart = JSON.parse(sessionStorage.getItem("moviesInCart")) || {};
     let totalPrice = 0;
 
-
-    cartItems.forEach(item => {
-        totalPrice += item.price * item.quantity;
-    });
+    for (const [movieTitle, movieQuantity] of Object.entries(allMoviesInCart)) {
+        totalPrice += movieQuantity * 20;
+    }
 
 
     $("#totalPrice").text(`$${totalPrice.toFixed(2)}`);
 });
+
 
 let payment_form = $("#payment_form");
 
