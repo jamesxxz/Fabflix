@@ -16,13 +16,13 @@
       min-height: 100vh;
       font-family: 'Poppins', sans-serif;
       padding: 20px;
-      position: relative; /* 使相对定位生效 */
+      position: relative;
     }
 
     header {
-      position: absolute; /* 绝对定位 */
-      top: 20px; /* 距离顶部20px */
-      left: 20px; /* 距离左侧20px */
+      position: absolute;
+      top: 20px;
+      left: 20px;
       margin-bottom: 20px;
     }
 
@@ -126,8 +126,8 @@
       <input id="cardnumber" name="cardnumber" type="text" pattern="[0-9]*" inputmode="numeric" required>
     </div>
     <div class="field-container">
-      <label for="expDate">Expiration Date (MM/YY)</label>
-      <input id="expDate" name="expDate" type="month" required>
+      <label for="expDate">Expiration Date (MM-DD-YYYY)</label>
+      <input id="expDate" name="expDate" type="date" required>
     </div>
     <input type="submit" id="submit" value="Place Order">
   </form>
