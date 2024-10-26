@@ -77,10 +77,4 @@ jQuery.ajax({
 console.log("Binding search form submit event.");
 search.submit(handleSearch);
 
-$("#query-result").click(function () {
-    if (sessionStorage.getItem("prevMovieListURL")) {
-        window.location.href = sessionStorage.getItem("prevMovieListURL");
-    }
-})
-
 //
