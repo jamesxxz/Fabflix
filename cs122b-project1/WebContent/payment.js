@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    let cartItems = JSON.parse(sessionStorage.getItem("shoppingCart")) || [];
+    let cartItems = JSON.parse(sessionStorage.getItem("moviesInCart")) || [];
     let totalPrice = 0;
 
 
