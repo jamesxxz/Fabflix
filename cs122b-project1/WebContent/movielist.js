@@ -19,7 +19,7 @@ async function sortStarsByMoviesPlayed(starsArr, starIdsArr) {
             url: `api/single-star?id=${starId}`,
         }).then((resultData) => {
             let movies = resultData[0]["movie_title"].split(", ");
-            res.push({ "star": starsArr[index], "starId": starId, "moviePlayed": movies.length });
+            res.push({"star": starsArr[index], "starId": starId, "moviePlayed": movies.length});
         }).catch((error) => {
             console.error(`Error fetching data for star ID ${starId}:`, error);
         });
@@ -74,6 +74,7 @@ function processGenres(genreString) {
 
     return anchorTags.join(', ');
 }
+
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
@@ -103,9 +104,10 @@ async function handleMoviesResult(resultData) {
         //rowHTML += `<th>${processGenres(resultData[i]["genres"])}</th>`;
         const genresHTML = processGenres(resultData[i]["genres"]) || 'N/A';
         rowHTML += `<th>${genresHTML}</th>`;
-        const starAnchors = await processStars(resultData[i]["stars"], resultData[i]["starIds"])||'NA';
+        const starAnchors = await processStars(resultData[i]["stars"], resultData[i]["starIds"]) || 'NA';
         rowHTML += `<th>${starAnchors}</th>`;
         rowHTML += "<th>" + resultData[i]["rating"] + "</th>";
+        rowHTML += "<th><button>" + "Add to Cart" + "</button></th>";
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
