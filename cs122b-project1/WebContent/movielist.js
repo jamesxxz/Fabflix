@@ -193,15 +193,6 @@ function updateSort(sortValue) {
     window.location.href = currentUrl;
 }
 
-function updateQueryStringParameter(uri, key, value) {
-    const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-    const separator = uri.indexOf("?") !== -1 ? "&" : "?";
-    if (uri.match(re)) {
-        return uri.replace(re, "$1" + key + "=" + value + "$2");
-    } else {
-        return uri + separator + key + "=" + value;
-    }
-}
 
 // 使用 JavaScript 动态填充排序选项
 function populateSortOptions() {
@@ -233,8 +224,9 @@ function initializePage() {
     // 获取 URL 中的参数，并加载对应的电影列表
     const num = getParameterByName('num') || 10;
     let page = getParameterByName('page') || 1;
-    const sort = getParameterByName('sort') || 'r0t1';
+    const sort = getParameterByName('sort') || 't1r0';
     const input = getParameterByName('input') || '';
+    document.getElementById('sortOptions').value = sort;
 
     numMovies.val(num);
 
@@ -256,11 +248,7 @@ document.getElementById('sortOptions').addEventListener('change', (event) => {
     updateSort(sortValue);
 });
 
-function updateSort(sortValue) {
-    let currentUrl = window.location.href;
-    currentUrl = updateQueryStringParameter(currentUrl, "sort", sortValue);
-    window.location.href = currentUrl;
-}
+
 
 function updateQueryStringParameter(uri, key, value) {
     const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
