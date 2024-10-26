@@ -10,7 +10,34 @@
 
 let numMovies = $("#numMovies");
 
-function processStars(starsString, starIdsString) {
+async function sortStarsByMoviesPlayed(starsArr, starIdsArr) {
+    let res = [];
+    const promises = starIdsArr.map((starId, index) => {
+        return $.ajax({
+            dataType: "json",
+            method: "GET",
+            url: `api/single-star?id=${starId}`,
+        }).then((resultData) => {
+            let movies = resultData[0]["movie_title"].split(", ");
+            res.push({ "star": starsArr[index], "starId": starId, "moviePlayed": movies.length });
+        }).catch((error) => {
+            console.error(`Error fetching data for star ID ${starId}:`, error);
+        });
+    });
+
+    await Promise.all(promises);
+
+    // Sort stars: first by movie count (desc), then alphabetically
+    res.sort((a, b) => {
+        if (a.moviePlayed > b.moviePlayed) return -1;
+        if (a.moviePlayed < b.moviePlayed) return 1;
+        return a.star.localeCompare(b.star);
+    });
+
+    return res;
+}
+
+async function processStars(starsString, starIdsString) {
     const starsArr = starsString.split(', ');
     // 如果 starIdsString 是 undefined 或 null，进行处理
     if (!starIdsString) {
@@ -26,19 +53,34 @@ function processStars(starsString, starIdsString) {
         return starsArr.join(', ');
     }
 
-    const anchorTags = starsArr.map((star, index) => {
-        return '<a href="single-star.html?id=' + starIdsArr[index] + '">' + star + '</a>';
+    const sortedStarsInfo = await sortStarsByMoviesPlayed(starsArr, starIdsArr);
+    const anchorTags = sortedStarsInfo.map((item) => {
+        return `<a href="single-star.html?id=${item.starId}">${item.star}</a>`;
     });
 
     return anchorTags.join(', ');
 }
 
+
+/**
+ * Processes genres and returns HTML with hyperlinks for genre-based browsing.
+ */
+function processGenres(genreString) {
+    const genresArr = genreString.split(', ');
+
+    const anchorTags = genresArr.map((genre) => {
+        return `<a href="movielist.html?num=10&page=1&sort=r0t1&input=genre:${genre}">${genre}</a>`;
+    });
+
+    return anchorTags.join(', ');
+}
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
-function handleMoviesResult(resultData) {
+async function handleMoviesResult(resultData) {
     console.log("handleMoviesResult: populating movies table from resultData");
+    console.log("Received resultData:", resultData);  // 新增的日志
 
     // Populate the movie table
     // Find the empty table body by id "movie_table_body"
@@ -58,8 +100,11 @@ function handleMoviesResult(resultData) {
             "</th>";
         rowHTML += "<th>" + resultData[i]["movie_yr"] + "</th>";
         rowHTML += "<th>" + resultData[i]["movie_director"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["genres"] + "</th>";
-        rowHTML += "<th>" + processStars(resultData[i]["stars"], resultData[i]["starIds"]) + "</th>";
+        //rowHTML += `<th>${processGenres(resultData[i]["genres"])}</th>`;
+        const genresHTML = processGenres(resultData[i]["genres"]) || 'N/A';
+        rowHTML += `<th>${genresHTML}</th>`;
+        const starAnchors = await processStars(resultData[i]["stars"], resultData[i]["starIds"])||'NA';
+        rowHTML += `<th>${starAnchors}</th>`;
         rowHTML += "<th>" + resultData[i]["rating"] + "</th>";
         rowHTML += "</tr>";
 
@@ -72,13 +117,21 @@ function handleMoviesResult(resultData) {
 // 通过 AJAX 请求获取电影列表数据
 function fetchMovieList(params = "") {
     const url = params ? `api/movies?${params}` : "api/movies";
-    console.log(url);
+    console.log("Fetching movie list from:", url);
+
 
     jQuery.ajax({
         dataType: "json",
         method: "GET",
         url: url,
-        success: handleMoviesResult,
+        success: (resultData) => {
+            console.log("Successfully received data:", resultData);
+            handleMoviesResult(resultData);
+        },
+        error: (jqXHR, textStatus, errorThrown) => {
+            console.error("AJAX request failed:", textStatus, errorThrown);
+            console.error("Response:", jqXHR.responseText);
+        }
     });
 }
 
