@@ -5,10 +5,6 @@ let search = $("#search");
 function handleGenreResult(resultData) {
     console.log("Populating genre and alpha lists");
 
-    let homeElement = $("#home");
-    homeElement.append('<li><a href="shopping-cart.html">Check Out</a></li>');
-    homeElement.append('<li><a href="login.html">Log Out</a></li>');
-
     populateList("#genre_body", resultData, "genre");
     populateAlphaList("#alpha_body");
 }
@@ -81,5 +77,10 @@ jQuery.ajax({
 console.log("Binding search form submit event.");
 search.submit(handleSearch);
 
+$("#query-result").click(function () {
+    if (sessionStorage.getItem("prevMovieListURL")) {
+        window.location.href = sessionStorage.getItem("prevMovieListURL");
+    }
+})
 
 //

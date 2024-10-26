@@ -2,7 +2,7 @@
 body {
     font-family: "Lato", sans-serif;
     background-color: #caecec;
-    color: #E0E0DE;
+    color: black;
     margin: 0;
     padding: 0;
 }
@@ -16,14 +16,6 @@ h1 {
     text-shadow: 3px 3px #3c373e;
 }
 
-.header_nav {
-    width: 100%;
-    background-color: #333;
-    position: fixed;
-    top: 0;
-    z-index: 10;
-}
-
 .header_nav ul {
     list-style-type: none;
     padding: 10px 0;
@@ -32,12 +24,20 @@ h1 {
     justify-content: center;
 }
 
+.header_nav {
+    display: flex;
+    justify-content: end;
+    margin-top: 15px;
+    margin-right: 10px;
+    z-index: 10;
+}
+
 .header_nav li {
     margin: 0 20px;
 }
 
 .header_nav a {
-    color: white;
+    color: black;
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
@@ -55,6 +55,7 @@ h1 {
     margin-right: auto;
     text-align: center;
 }
+
 .searchContainer {
     display: flex;
     flex-direction: column;
@@ -172,6 +173,7 @@ input[type="radio"]:checked + .label + .panel {
 input[name="tabs"]:checked + label + .panel {
     display: block; /* Show the selected tab’s panel */
 }
+
 #genre_body {
     display: flex;
     flex-wrap: wrap; /* 允许内容换行 */
@@ -197,6 +199,7 @@ input[name="tabs"]:checked + label + .panel {
     background-color: #FA9F0D; /* 悬停时改变背景色 */
     color: white; /* 悬停时文字变为白色 */
 }
+
 #alpha_body {
     display: flex;
     flex-wrap: wrap; /* 允许内容换行 */

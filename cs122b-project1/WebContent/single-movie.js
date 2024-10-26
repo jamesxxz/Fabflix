@@ -105,7 +105,7 @@ async function handleResult(resultData) {
     // find the empty h3 body by id "movie_info"
     let movieInfoElement = jQuery("#movie_info");
 
-    const starAnchors = await processStars(resultData[0]["stars"], resultData[0]["star_ids"])
+    const starAnchors = await processStars(resultData[0]["stars"], resultData[0]["star_ids"]);
 
     movieInfoElement.append("<p>Movie Title: " + resultData[0]["movie_title"] + "</p>" +
         "<p>Release Year: " + resultData[0]["movie_yr"] + "</p>" +
