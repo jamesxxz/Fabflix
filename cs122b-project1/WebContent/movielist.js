@@ -75,6 +75,21 @@ function processGenres(genreString) {
     return anchorTags.join(', ');
 }
 
+function addToCart(movieData) {
+    let movieObj = JSON.parse(sessionStorage.getItem("moviesInCart"));
+    if (!movieObj) {
+        movieObj = {};
+    }
+
+    if (movieData.movie_title in movieObj) {
+        movieObj[movieData.movie_title] += 1
+    } else {
+        movieObj[movieData.movie_title] = 1
+    }
+    sessionStorage.setItem("moviesInCart", JSON.stringify(movieObj));
+    alert('Successfully added movie ' + movieData.movie_title + ' into your shopping cart!');
+}
+
 /**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
@@ -107,7 +122,7 @@ async function handleMoviesResult(resultData) {
         const starAnchors = await processStars(resultData[i]["stars"], resultData[i]["starIds"]) || 'NA';
         rowHTML += `<th>${starAnchors}</th>`;
         rowHTML += "<th>" + resultData[i]["rating"] + "</th>";
-        rowHTML += "<th><button>" + "Add to Cart" + "</button></th>";
+        rowHTML += `<th><button onclick='addToCart(${JSON.stringify(resultData[i])})'>Add</button></th>`;
         rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
@@ -192,12 +207,12 @@ function updateQueryStringParameter(uri, key, value) {
 function populateSortOptions() {
     const sortNav = jQuery("#sort_nav");
     const sortOptions = [
-        { id: 't1r0', text: 'Title ↑ Rating ↓' },
-        { id: 't0r0', text: 'Title ↓ Rating ↑' },
-        { id: 't1r1', text: 'Title ↑ Rating ↑' },
-        { id: 't0r1', text: 'Title ↓ Rating ↓' },
-        { id: 'r1t0', text: 'Rating ↑ Title ↓' },
-        { id: 'r0t1', text: 'Rating ↓ Title ↑' }
+        {id: 't1r0', text: 'Title ↑ Rating ↓'},
+        {id: 't0r0', text: 'Title ↓ Rating ↑'},
+        {id: 't1r1', text: 'Title ↑ Rating ↑'},
+        {id: 't0r1', text: 'Title ↓ Rating ↓'},
+        {id: 'r1t0', text: 'Rating ↑ Title ↓'},
+        {id: 'r0t1', text: 'Rating ↓ Title ↑'}
     ];
 
     sortOptions.forEach(option => {
