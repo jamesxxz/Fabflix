@@ -95,8 +95,7 @@ public class PaymentServlet extends HttpServlet {
             } else {
                 // 验证失败，返回错误信息
                 responseJsonObject.addProperty("status", "fail");
-                responseJsonObject.addProperty("message", "Invalid credit card details.");
-                response.setStatus(400);
+                responseJsonObject.addProperty("message", "Invalid payment information.");
             }
 
             rs.close();
@@ -104,7 +103,6 @@ public class PaymentServlet extends HttpServlet {
         } catch (Exception e) {
             responseJsonObject.addProperty("status", "error");
             responseJsonObject.addProperty("message", e.getMessage());
-            response.setStatus(500);
             e.printStackTrace();
         }
 
