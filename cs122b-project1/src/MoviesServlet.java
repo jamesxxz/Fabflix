@@ -52,35 +52,45 @@ public class MoviesServlet extends HttpServlet {
 
         try (Connection conn = dataSource.getConnection()) {
             // 构建 SQL 查询
-            String query = "WITH TopGenres AS ( " +
-                    "SELECT g.name AS genre_name, gim.movieId, " +
-                    "ROW_NUMBER() OVER (PARTITION BY gim.movieId ORDER BY g.name ASC) AS genreRank " +
-                    "FROM genres_in_movies gim " +
-                    "JOIN genres g ON gim.genreId = g.id), " +
-                    "TopStars AS ( " +
-                    "SELECT s.name AS star_name, sim.movieId, s.id AS star_id, " +
-                    "ROW_NUMBER() OVER (PARTITION BY sim.movieId ORDER BY s.name ASC) AS starRank " +
-                    "FROM stars_in_movies sim " +
-                    "JOIN stars s ON sim.starId = s.id) " +
 
-                    "SELECT m.id, m.title, m.year, m.director, " +
-                    "(SELECT GROUP_CONCAT(genre_name SEPARATOR ', ') " +
-                    "FROM TopGenres WHERE movieId = m.id AND genreRank <= 3) AS genres, " +
-                    "(SELECT GROUP_CONCAT(star_name SEPARATOR ', ') " +
-                    "FROM TopStars WHERE movieId = m.id AND starRank <= 3) AS stars, " +
-                    "(SELECT GROUP_CONCAT(star_id SEPARATOR ', ') " +
-                    "FROM TopStars WHERE movieId = m.id AND starRank <= 3) AS starIds, " +
-                    "r.rating " +
-                    "FROM movies m " +
-                    "JOIN ratings r ON m.id = r.movieId " +
-                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +  //
-                    "JOIN stars s ON sim.starId = s.id " +//
-                    "JOIN genres_in_movies gim ON m.id = gim.movieId " +
-                    "JOIN genres g ON gim.genreId = g.id " +
-                    "WHERE " + inputQuery + " " +  // inputQuery can include a genre condition like `g.name = 'Action'`
-                    "GROUP BY m.id, m.title, m.year, m.director, r.rating " +
-                    "ORDER BY " + sortOrder + " " +
-                    "LIMIT ? OFFSET ?;";
+            String query =
+                    "WITH StarCounts AS ( " +
+                            "    SELECT s.id AS star_id, s.name AS star_name, COUNT(sim.movieId) AS movie_count " +
+                            "    FROM stars s " +
+                            "    JOIN stars_in_movies sim ON s.id = sim.starId " +
+                            "    GROUP BY s.id " +
+                            "), " +
+                            "TopStars AS ( " +
+                            "    SELECT sc.star_name, sc.star_id, sc.movie_count, sim.movieId, " +
+                            "           ROW_NUMBER() OVER (PARTITION BY sim.movieId ORDER BY sc.movie_count DESC, sc.star_name ASC) AS starRank " +
+                            "    FROM StarCounts sc " +
+                            "    JOIN stars_in_movies sim ON sc.star_id = sim.starId " +
+                            "), " +
+                            "TopGenres AS ( " +
+                            "    SELECT g.name AS genre_name, gim.movieId, " +
+                            "           ROW_NUMBER() OVER (PARTITION BY gim.movieId ORDER BY g.name ASC) AS genreRank " +
+                            "    FROM genres_in_movies gim " +
+                            "    JOIN genres g ON gim.genreId = g.id " +
+                            ") " +
+                            "SELECT m.id, m.title, m.year, m.director, " +
+                            "       (SELECT GROUP_CONCAT(genre_name SEPARATOR ', ') " +
+                            "        FROM TopGenres WHERE movieId = m.id AND genreRank <= 3) AS genres, " +
+                            "       (SELECT GROUP_CONCAT(star_name SEPARATOR ', ') " +
+                            "        FROM TopStars WHERE movieId = m.id AND starRank <= 3) AS stars, " +
+                            "       (SELECT GROUP_CONCAT(star_id SEPARATOR ', ') " +
+                            "        FROM TopStars WHERE movieId = m.id AND starRank <= 3) AS starIds, " +
+                            "       r.rating " +
+                            "FROM movies m " +
+                            "JOIN ratings r ON m.id = r.movieId " +
+                            "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                            "JOIN stars s ON sim.starId = s.id " +  // 确保 stars 表连接在查询中
+                            "JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                            "JOIN genres g ON gim.genreId = g.id " +
+                            "WHERE " + inputQuery + " " +
+                            "GROUP BY m.id, m.title, m.year, m.director, r.rating " +
+                            "ORDER BY " + sortOrder + " " +
+                            "LIMIT ? OFFSET ?;";
+
 
 
             // 准备查询语句
