@@ -44,6 +44,7 @@ function submitPaymentForm(formSubmitEvent) {
     console.log("submit Payment form");
     formSubmitEvent.preventDefault();
     let expDate = $("#expDate").val();
+    console.log("Expiration Date from input:", expDate);
     if (!expDate) {
         $("#payment_error_message").text("Expiration date is required.");
         return;
