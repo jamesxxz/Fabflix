@@ -49,8 +49,8 @@ public class ConfirmationServlet extends HttpServlet {
 
                     if (rs.next()) {
                         JsonObject movieInfo = new JsonObject();
-                        movieInfo.addProperty("title", rs.getString("title"));
-                        movieInfo.addProperty("quantity", salesIdMap.get(movieId));
+                        movieInfo.addProperty("movieTitle", rs.getString("title"));
+                        movieInfo.addProperty("salesId", salesIdMap.get(movieId));
                         jsonArray.add(movieInfo);
                     }
                     rs.close();

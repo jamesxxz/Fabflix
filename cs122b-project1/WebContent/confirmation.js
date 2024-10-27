@@ -1,20 +1,18 @@
 // Function to handle the result from the /api/confirmation endpoint
 function handleResult(resultData) {
     console.log("handleResult: confirmation page");
+    console.log(resultData);
 
-    // Get the first salesId from the result data (assuming one sale per movie)
-    let salesId = Object.values(resultData)[0].salesId;
-
-    // Optionally store the salesId in sessionStorage for future use
-    sessionStorage.setItem("salesId", salesId);
+    let allMoviesPurchased = JSON.parse(sessionStorage.getItem("moviesInCart"));
 
     // Select the element where order details will be displayed
     let orderDetailsElement = jQuery("#orderDetails");
 
     // Build the order details string with Sale ID and table headers
-    let orderDetails = `Sale ID: ${salesId}<br>`;
+    let orderDetails = "";
     orderDetails += `<table>
                         <tr>
+                            <th>Sales ID</th>
                             <th>Movie Title</th>
                             <th>Quantity</th>
                             <th>Price</th>
@@ -24,16 +22,17 @@ function handleResult(resultData) {
     let totalPrice = 0;
 
     // Iterate over the result data to build the table rows
-    for (let movieId in resultData) {
-        let movieInfo = resultData[movieId];
-        let quantity = movieInfo.quantity;
-        let pricePerMovie = 10; // Fixed price per movie (adjust if needed)
+    for (let i = 0; i < resultData.length; i++) {
+        let movieTitle = resultData[i].movieTitle;
+        let quantity = allMoviesPurchased[movieTitle];
+        let pricePerMovie = 20; // Fixed price per movie (adjust if needed)
         let price = quantity * pricePerMovie;
         totalPrice += price;
 
         // Append each movie's details as a new row in the table
         orderDetails += `<tr>
-                            <td>${movieInfo.title}</td>
+                            <td>${resultData[i].salesId}</td>
+                            <td>${movieTitle}</td>
                             <td>${quantity}</td>
                             <td>$${price}</td>
                          </tr>`;
@@ -45,6 +44,8 @@ function handleResult(resultData) {
 
     // Set the built HTML content inside the order details element
     orderDetailsElement.html(orderDetails);
+
+    sessionStorage.clear();
 }
 
 // Perform an AJAX GET request to fetch the confirmation data
