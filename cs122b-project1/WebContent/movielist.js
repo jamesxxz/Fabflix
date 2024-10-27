@@ -199,9 +199,9 @@ function populateSortOptions() {
     const sortNav = jQuery("#sort_nav");
     const sortOptions = [
         {id: 't1r0', text: 'Title ↑ Rating ↓'},
-        {id: 't0r0', text: 'Title ↓ Rating ↑'},
+        {id: 't0r1', text: 'Title ↓ Rating ↑'},
         {id: 't1r1', text: 'Title ↑ Rating ↑'},
-        {id: 't0r1', text: 'Title ↓ Rating ↓'},
+        {id: 't0r0', text: 'Title ↓ Rating ↓'},
         {id: 'r1t0', text: 'Rating ↑ Title ↓'},
         {id: 'r0t1', text: 'Rating ↓ Title ↑'}
     ];
@@ -247,7 +247,6 @@ document.getElementById('sortOptions').addEventListener('change', (event) => {
     const sortValue = event.target.value;
     updateSort(sortValue);
 });
-
 
 
 function updateQueryStringParameter(uri, key, value) {
