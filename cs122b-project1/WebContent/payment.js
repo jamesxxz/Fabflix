@@ -11,7 +11,7 @@
 //
 //     $("#totalPrice").text(`$${totalPrice.toFixed(2)}`);
 // });
-let movieTitles = [];
+let movieTitles = "";
 
 $(document).ready(function () {
     const allMoviesInCart = JSON.parse(sessionStorage.getItem("moviesInCart")) || {};
@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     for (const [movieTitle, movieQuantity] of Object.entries(allMoviesInCart)) {
         totalPrice += movieQuantity * 20;
-        movieTitles.push(movieTitle);
+        movieTitles += movieTitle + "::" + movieQuantity + ";;";
     }
 
 
@@ -29,16 +29,15 @@ $(document).ready(function () {
 
 let payment_form = $("#payment_form");
 
-function handlePaymentResult(resultDataString) {
-    let resultDataJson = JSON.parse(resultDataString);
-    console.log("handle payment response", resultDataJson);
+function handlePaymentResult(resultDataObj) {
+    console.log("handle payment response", resultDataObj);
 
-    if (resultDataJson["status"] === "success") {
+    if (resultDataObj["status"] === "success") {
         window.location.replace("confirmation.html");
     } else {
 
-        console.log("show error message", resultDataJson["message"]);
-        $("#payment_error_message").text(resultDataJson["message"]);
+        console.log("show error message", resultDataObj["message"]);
+        $("#payment_error_message").text(resultDataObj["message"]);
     }
 }
 

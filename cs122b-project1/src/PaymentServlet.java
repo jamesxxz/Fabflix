@@ -18,6 +18,8 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
+import java.util.ArrayList;
+
 @WebServlet(name = "PaymentServlet", urlPatterns = "/api/payment")
 public class PaymentServlet extends HttpServlet {
     private DataSource dataSource;
@@ -43,14 +45,32 @@ public class PaymentServlet extends HttpServlet {
         String lastName = request.getParameter("lastName");
         String expDate = request.getParameter("expDate");
         String movieTitles = request.getParameter("movieTitles");
-
+        System.out.println(cardNumber);
         System.out.println(movieTitles);
+
+        String[] allmovies = movieTitles.split(";;");
         try (Connection conn = dataSource.getConnection()) {
             // 查询信用卡信息是否存在并匹配
             String query = "SELECT * FROM creditcards WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, cardNumber);
             ResultSet rs = statement.executeQuery();
+
+
+            ArrayList<String> movieInfos = new ArrayList<>();
+
+            for (int i = 0; i < allmovies.length; i++) {
+                String[] movieInfo = allmovies[i].split("::");
+                String query2 = "SELECT id FROM movies WHERE title = ?";
+                PreparedStatement statement2 = conn.prepareStatement(query2);
+                statement2.setString(1, movieInfo[0]);
+                ResultSet rs1 = statement2.executeQuery();
+                if (rs1.next()) {
+                    movieInfos.add(rs1.getString("id") + "::" + movieInfo[1]);
+                }
+                rs1.close();
+                statement2.close();
+            }
 
             String correctFirstName = "";
             String correctLastName = "";
@@ -62,16 +82,9 @@ public class PaymentServlet extends HttpServlet {
                 correctExpDate = rs.getString("expiration");
             }
 
-            System.out.println("firstName" + firstName);
-            System.out.println("correctFirstName" + correctFirstName);
-            System.out.println("lastName" + lastName);
-            System.out.println("correctLastName" + correctLastName);
-            System.out.println(expDate);
-            System.out.println(correctExpDate);
-
             if (firstName.equals(correctFirstName) && lastName.equals(correctLastName) && expDate.equals(correctExpDate)) {
                 // 验证成功，处理订单
-                processOrder(request, conn, responseJsonObject);
+                processOrder(request, conn, responseJsonObject, movieInfos);
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "Payment successful!");
                 response.setStatus(200);
@@ -95,11 +108,10 @@ public class PaymentServlet extends HttpServlet {
         out.close();
     }
 
-    private void processOrder(HttpServletRequest request, Connection conn, JsonObject responseJsonObject) throws Exception {
+    private void processOrder(HttpServletRequest request, Connection conn, JsonObject responseJsonObject, ArrayList<String> movieInfos) throws Exception {
         HttpSession session = request.getSession();
-        Map<String, Integer> moviesInCart = (Map<String, Integer>) session.getAttribute("moviesInCart");
 
-        if (moviesInCart == null || moviesInCart.isEmpty()) {
+        if (movieInfos.isEmpty()) {
             throw new Exception("Cart is empty.");
         }
 
@@ -107,16 +119,16 @@ public class PaymentServlet extends HttpServlet {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = formatter.format(new Date(System.currentTimeMillis()));
 
-        for (Map.Entry<String, Integer> entry : moviesInCart.entrySet()) {
-            String movieId = entry.getKey();
-            int quantity = entry.getValue();
+        for (String movieInfo : movieInfos) {
+            String[] movieData = movieInfo.split("::");
+            System.out.println(movieInfo);
 
-            for (int i = 0; i < quantity; i++) {
+            for (int i = 0; i < Integer.parseInt(movieData[1]); i++) {
                 // 插入销售记录
                 String insertQuery = "INSERT INTO sales (customerId, movieId, saleDate) VALUES (?, ?, ?)";
                 PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
                 insertStatement.setString(1, customerId);
-                insertStatement.setString(2, movieId);
+                insertStatement.setString(2, movieData[0]);
                 insertStatement.setString(3, currentDate);
                 insertStatement.executeUpdate();
                 insertStatement.close();
