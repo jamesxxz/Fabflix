@@ -73,6 +73,8 @@ public class MoviesServlet extends HttpServlet {
                     "r.rating " +
                     "FROM movies m " +
                     "JOIN ratings r ON m.id = r.movieId " +
+                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +  //
+                    "JOIN stars s ON sim.starId = s.id " +//
                     "JOIN genres_in_movies gim ON m.id = gim.movieId " +
                     "JOIN genres g ON gim.genreId = g.id " +
                     "WHERE " + inputQuery + " " +  // inputQuery can include a genre condition like `g.name = 'Action'`
