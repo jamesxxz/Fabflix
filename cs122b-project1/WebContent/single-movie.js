@@ -96,6 +96,21 @@ function handleReturnToPrevMovieList() {
     );
 }
 
+function addToCart(movieData) {
+    let movieObj = JSON.parse(sessionStorage.getItem("moviesInCart"));
+    if (!movieObj) {
+        movieObj = {};
+    }
+
+    if (movieData.movie_title in movieObj) {
+        movieObj[movieData.movie_title] += 1
+    } else {
+        movieObj[movieData.movie_title] = 1
+    }
+    sessionStorage.setItem("moviesInCart", JSON.stringify(movieObj));
+    alert('Successfully added movie ' + movieData.movie_title + ' into your shopping cart!');
+}
+
 
 async function handleResult(resultData) {
 
@@ -112,7 +127,8 @@ async function handleResult(resultData) {
         "<p>Director: " + resultData[0]["movie_director"] + "</p>" +
         "<p>All Genres: " + processGenres(resultData[0]["genres"]) + "</p>" +
         "<p>All Stars: " + starAnchors + "</p>" +
-        "<p>Rating: " + resultData[0]["rating"] + "</p>"
+        "<p>Rating: " + resultData[0]["rating"] + "</p>" +
+        `<button onclick='addToCart(${JSON.stringify(resultData[0])})'>Add to Cart</button>`
     );
 
 }

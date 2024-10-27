@@ -42,7 +42,7 @@ function addMovies(movieTitle) {
 
 function minusMovies(movieTitle) {
     let allMoviesInCart = JSON.parse(sessionStorage.getItem("moviesInCart"));
-    if (allMoviesInCart[movieTitle] > 0) {
+    if (allMoviesInCart[movieTitle] > 1) {
         allMoviesInCart[movieTitle] -= 1;
         sessionStorage.setItem("moviesInCart", JSON.stringify(allMoviesInCart));
         window.location.reload();
