@@ -17,7 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Map;
-
+import java.util.HashMap;
 import java.util.ArrayList;
 
 @WebServlet(name = "PaymentServlet", urlPatterns = "/api/payment")
@@ -49,6 +49,7 @@ public class PaymentServlet extends HttpServlet {
         System.out.println(movieTitles);
 
         String[] allmovies = movieTitles.split(";;");
+        HttpSession session = request.getSession();
         try (Connection conn = dataSource.getConnection()) {
             // 查询信用卡信息是否存在并匹配
             String query = "SELECT * FROM creditcards WHERE id = ?";
@@ -84,7 +85,10 @@ public class PaymentServlet extends HttpServlet {
 
             if (firstName.equals(correctFirstName) && lastName.equals(correctLastName) && expDate.equals(correctExpDate)) {
                 // 验证成功，处理订单
-                processOrder(request, conn, responseJsonObject, movieInfos);
+                //processOrder(request, conn, responseJsonObject, movieInfos);
+                Map<String, Integer> salesIdMap = processOrder(request, conn, movieInfos);
+                session.setAttribute("salesId", salesIdMap); // 将salesId存入session
+
                 responseJsonObject.addProperty("status", "success");
                 responseJsonObject.addProperty("message", "Payment successful!");
                 response.setStatus(200);
@@ -108,8 +112,9 @@ public class PaymentServlet extends HttpServlet {
         out.close();
     }
 
-    private void processOrder(HttpServletRequest request, Connection conn, JsonObject responseJsonObject, ArrayList<String> movieInfos) throws Exception {
+    private Map<String, Integer> processOrder(HttpServletRequest request, Connection conn, ArrayList<String> movieInfos) throws Exception {
         HttpSession session = request.getSession();
+        Map<String, Integer> salesIdMap = new HashMap<>(); //newly added
 
         if (movieInfos.isEmpty()) {
             throw new Exception("Cart is empty.");
@@ -124,15 +129,25 @@ public class PaymentServlet extends HttpServlet {
             System.out.println(movieInfo);
 
             for (int i = 0; i < Integer.parseInt(movieData[1]); i++) {
-                // 插入销售记录
                 String insertQuery = "INSERT INTO sales (customerId, movieId, saleDate) VALUES (?, ?, ?)";
-                PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
+                PreparedStatement insertStatement = conn.prepareStatement(insertQuery, new String[]{"salesid"});
+                //PreparedStatement insertStatement = conn.prepareStatement(insertQuery);
                 insertStatement.setString(1, customerId);
                 insertStatement.setString(2, movieData[0]);
                 insertStatement.setString(3, currentDate);
                 insertStatement.executeUpdate();
+                ResultSet generatedKeys = insertStatement.getGeneratedKeys();
+
+                if (generatedKeys.next()) {
+                    int salesId = generatedKeys.getInt(1);
+                    salesIdMap.put(movieData[0], salesId);
+                }
                 insertStatement.close();
             }
         }
+        System.out.println("Sales ID Map: " + salesIdMap);
+
+        return salesIdMap;
     }
+
 }
