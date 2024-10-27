@@ -11,6 +11,7 @@
 //
 //     $("#totalPrice").text(`$${totalPrice.toFixed(2)}`);
 // });
+let movieTitles = [];
 
 $(document).ready(function () {
     const allMoviesInCart = JSON.parse(sessionStorage.getItem("moviesInCart")) || {};
@@ -18,6 +19,7 @@ $(document).ready(function () {
 
     for (const [movieTitle, movieQuantity] of Object.entries(allMoviesInCart)) {
         totalPrice += movieQuantity * 20;
+        movieTitles.push(movieTitle);
     }
 
 
@@ -57,7 +59,7 @@ function submitPaymentForm(formSubmitEvent) {
     $.ajax({
         url: "api/payment",
         method: "POST",
-        data: payment_form.serialize(),
+        data: payment_form.serialize() + `&movieTitles=${movieTitles}`,
         success: handlePaymentResult
     });
 }

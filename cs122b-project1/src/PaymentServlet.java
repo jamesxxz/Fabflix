@@ -42,7 +42,9 @@ public class PaymentServlet extends HttpServlet {
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String expDate = request.getParameter("expDate");
+        String movieTitles = request.getParameter("movieTitles");
 
+        System.out.println(movieTitles);
         try (Connection conn = dataSource.getConnection()) {
             // 查询信用卡信息是否存在并匹配
             String query = "SELECT * FROM creditcards WHERE id = ?";
@@ -59,6 +61,13 @@ public class PaymentServlet extends HttpServlet {
                 correctLastName = rs.getString("lastName");
                 correctExpDate = rs.getString("expiration");
             }
+
+            System.out.println("firstName" + firstName);
+            System.out.println("correctFirstName" + correctFirstName);
+            System.out.println("lastName" + lastName);
+            System.out.println("correctLastName" + correctLastName);
+            System.out.println(expDate);
+            System.out.println(correctExpDate);
 
             if (firstName.equals(correctFirstName) && lastName.equals(correctLastName) && expDate.equals(correctExpDate)) {
                 // 验证成功，处理订单
