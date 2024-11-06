@@ -34,11 +34,20 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
         // Retrieve form data
         String username = request.getParameter("email");
         String password = request.getParameter("password");
-
+        JsonObject responseJsonObject = new JsonObject();
+        try {
+            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+        } catch (Exception e) {
+            responseJsonObject.addProperty("status", "fail");
+            responseJsonObject.addProperty("message", "Please complete reCAPTCHA verification.");
+            response.getWriter().write(responseJsonObject.toString());
+            return;
+        }
         String customerId = "";
         String validPassword = "";
         boolean isSuccess = false;
@@ -67,7 +76,7 @@ public class LoginServlet extends HttpServlet {
         }
 
 
-        JsonObject responseJsonObject = new JsonObject();
+        //JsonObject responseJsonObject = new JsonObject();
 
         if (isSuccess && !Objects.equals(password, "")) {
             // Login success:

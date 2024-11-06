@@ -16,12 +16,16 @@ function handleSuccessLogin(resData) {
 function handleLoginSubmit(logInEvent) {
 
     logInEvent.preventDefault();  // prevent redirect of page
-
+    let recaptchaResponse = grecaptcha.getResponse();
+    if (!recaptchaResponse) {
+        alert("Please complete the reCAPTCHA.");
+        return;
+    }
     $.ajax(
         "api/login", {
             method: "POST",
             // Serialize the login form to the data sent by POST request
-            data: loginForm.serialize(),
+            data: loginForm.serialize() + "&g-recaptcha-response=" + recaptchaResponse,
             success: handleSuccessLogin
         }
     );
