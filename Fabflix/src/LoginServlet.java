@@ -1,4 +1,3 @@
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import javax.naming.InitialContext;
@@ -12,12 +11,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.util.Objects;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 @WebServlet(name = "LoginServlet", urlPatterns = "/api/login")
 public class LoginServlet extends HttpServlet {
@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
             return;
         }
         String customerId = "";
-        String validPassword = "";
+        String encryptedPassword = "";
         boolean isSuccess = false;
         try (Connection conn = dataSource.getConnection()) {
             String query = "SELECT * from customers where email = ? ";
@@ -60,8 +60,8 @@ public class LoginServlet extends HttpServlet {
 
             if (rs.next()) {
                 customerId = rs.getString("id");
-                validPassword = rs.getString("password");
-                isSuccess = Objects.equals(password, validPassword);
+                encryptedPassword = rs.getString("password");
+                isSuccess = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
             }
 
         } catch (Exception e) {
@@ -75,8 +75,6 @@ public class LoginServlet extends HttpServlet {
             response.setStatus(500);
         }
 
-
-        //JsonObject responseJsonObject = new JsonObject();
 
         if (isSuccess && !Objects.equals(password, "")) {
             // Login success:
