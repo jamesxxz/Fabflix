@@ -9,6 +9,7 @@
  */
 
 let numMovies = $("#numMovies");
+let fetchedMovies = 0;
 
 async function sortStarsByMoviesPlayed(starsArr, starIdsArr) {
     let res = [];
@@ -101,6 +102,7 @@ async function handleMoviesResult(resultData) {
     // Populate the movie table
     // Find the empty table body by id "movie_table_body"
     let movieTableBodyElement = jQuery("#movie_table_body");
+    fetchedMovies = resultData.length;
 
     // Iterate through resultData, no more than 10 entries
     for (let i = 0; i < resultData.length; i++) {
@@ -164,7 +166,7 @@ function handleNumMoviesChange() {
     });
 }
 
-function handlePrevNextPagination() {
+function handlePrevNextPagination(numMovies) {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
     const curPage = getParameterByName('page')
@@ -179,10 +181,14 @@ function handlePrevNextPagination() {
         }
     });
     $('#next').click(function () {
-        params.set('page', (parseInt(curPage) + 1).toString());
-        url.search = params.toString();
-        const updatedUrl = url.toString();
-        window.location.replace(updatedUrl);
+        if (numMovies > fetchedMovies) {
+            params.set('page', curPage);
+        } else {
+            params.set('page', (parseInt(curPage) + 1).toString());
+            url.search = params.toString();
+            const updatedUrl = url.toString();
+            window.location.replace(updatedUrl);
+        }
     });
 }
 
@@ -233,7 +239,7 @@ function initializePage() {
     fetchMovieList(`num=${num}&page=${page}&sort=${sort}&input=${input}`);
 
     handleNumMoviesChange();
-    handlePrevNextPagination();
+    handlePrevNextPagination(num);
 }
 
 // 获取 URL 参数
