@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./login.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
+    <title>Login to Fablix</title>
+</head>
+<body>
+<h1>Employee Login</h1>
+<!-- Set the method to POST to avoid showing the username/password in the URL
+     The default action is disabled to allow your own implementation. -->
+<form id="loginForm" method="post" action="#">
+    <label>Username: </label>
+    <input name="email" type="email" id="email" required>
+    <br>
+    <label>Password: </label>
+    <input name="password" type="password" id="password" required>
+    <br>
+    <br>
+    <!-- Add the reCAPTCHA widget -->
+    <div class="g-recaptcha" data-sitekey="6Le3cXYqAAAAAGWTWmIa9G6rr0HASCDRJSw4TKdW"></div>
+    <br>
+    <input type="submit" id="submit" value="Login" class="submit-btn">
+</form>
+
+<div id="login_error_message"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="./login.js"></script>
+</body>
+</html>
