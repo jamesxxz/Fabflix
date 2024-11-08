@@ -1,0 +1,55 @@
+
+.metaData {
+    display: flex;
+    margin-left: 10%;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* Style for the metadata container */
+#metadata {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Style for the table inside the metadata container */
+#metadata table {
+    width: 90vh; /* Full width */
+    border-collapse: collapse;
+    margin-bottom: 20px; /* Add space between tables */
+}
+
+/* Style for the table headings (Attribute and Type) */
+#metadata th {
+    background-color: #bcbcbc; /* Light gray background */
+    text-align: left; /* Align text to the left */
+    padding: 8px; /* Add padding inside the header */
+    border: 1px solid #ddd; /* Add light border */
+}
+
+/* Style for the table data cells */
+#metadata td {
+    text-align: left; /* Align text to the left */
+    padding: 8px; /* Add padding inside cells */
+    border: 1px solid #ddd; /* Add light border */
+}
+
+/* Style for the table rows */
+#metadata tr {
+    background-color: #f9f9f9;
+}
+
+#metadata tr:hover {
+    background-color: #e9e9e9; /* Highlight rows on hover */
+}
+
+/* Style for the table name */
+#metadata p {
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: 1.3em; /* Larger text for table name */
+    text-align: center;
+}
