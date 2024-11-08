@@ -38,7 +38,7 @@ BEGIN
 
 
         -- handle star id
-        IF starId NOT NULL THEN
+        IF starId IS NULL THEN
             SELECT CONCAT("nm", SUBSTRING(max(id), 3) + 1) INTO starId
             FROM stars;
 
@@ -51,7 +51,7 @@ BEGIN
         VALUES (starId, movieId);
 
         -- handle genre id
-        IF genreId NOT NULL THEN
+        IF genreId IS NULL THEN
             SELECT max(id) + 1 INTO genreId
             FROM genres;
 
