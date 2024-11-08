@@ -233,4 +233,21 @@ public class Insertion {
             e.printStackTrace();
         }
     }
+    public void insertMovies(List<Movie> movies) {
+        addMovies(movies);
+    }
+
+    public void insertStars(List<List<String>> actors) {
+        addActors(actors);
+    }
+
+    public void insertStarsInMovies(Map<String, List<String>> starsInMovies) {
+        addActorsToMovies(starsInMovies);
+    }
+
+    public void saveNotFoundDataToFile() {
+        generateReport();
+    }
+
 }
+
