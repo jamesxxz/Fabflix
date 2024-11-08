@@ -4,7 +4,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -14,7 +13,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Map;
 
 @WebServlet(name = "DashboardServlet", urlPatterns = "/_dashboard/api/dashboard")
 public class DashboardServlet extends HttpServlet {
@@ -43,9 +41,6 @@ public class DashboardServlet extends HttpServlet {
             PreparedStatement statement = conn.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getString("Table"));
-                System.out.println(rs.getString("Column"));
-                System.out.println(rs.getString("Type"));
                 JsonObject jsonObj = new JsonObject();
                 jsonObj.addProperty("tableName", rs.getString("Table"));
                 jsonObj.addProperty("columnName", rs.getString("Column"));
