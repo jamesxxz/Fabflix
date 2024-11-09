@@ -1,11 +1,9 @@
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.*;
 import java.util.*;
 
-public class Insertion {
+public class Inserter {
     private DataSource dataSource;
     private Set<String> missingMovies;
     private Set<String> missingActors;
@@ -14,8 +12,8 @@ public class Insertion {
     private final String password = "My6$Password";
     private final String databaseUrl = "jdbc:mysql://localhost:3306/moviedb";
 
-    public Insertion() {
-        try {
+    public Inserter() {
+        try {//deal with the missing data
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             missingMovies = new HashSet<>();
             missingActors = new HashSet<>();
@@ -233,19 +231,19 @@ public class Insertion {
             e.printStackTrace();
         }
     }
-    public void insertMovies(List<Movie> movies) {
+    public void inserting_Movies(List<Movie> movies) {
         addMovies(movies);
     }
 
-    public void insertStars(List<List<String>> actors) {
+    public void inserting_Stars(List<List<String>> actors) {
         addActors(actors);
     }
 
-    public void insertStarsInMovies(Map<String, List<String>> starsInMovies) {
+    public void insertingStarsinMovies(Map<String, List<String>> starsInMovies) {
         addActorsToMovies(starsInMovies);
     }
 
-    public void saveNotFoundDataToFile() {
+    public void saveingDatatoFilewhichareNotFound() {
         generateReport();
     }
 
