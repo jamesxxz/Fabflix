@@ -39,8 +39,9 @@ public class MovieSAXParser extends DefaultHandler {
     private void initializeParser() {
         SAXParserFactory factory = SAXParserFactory.newInstance();
 
-        try {
+        try {//need to be revised when uploading to aws
             SAXParser parser = factory.newSAXParser();
+            //parser.parse在爬xml文件时，每一个xml中的元素都会被startElement,characters, endElement等方法检查。
             parser.parse("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/mains243.xml", this);
             parser.parse("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/casts124.xml", this);
             parser.parse("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/actors63.xml", this);
@@ -62,7 +63,7 @@ public class MovieSAXParser extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         currentValue = "";
-        if (qName.equalsIgnoreCase("film")) {
+        if (qName.equalsIgnoreCase("film")) {//当xml文件中的元素标签是film时，starElement方法会被调用
             currentMovie = new Movie();
         }
     }
@@ -75,8 +76,8 @@ public class MovieSAXParser extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         switch (qName.toLowerCase()) {
-            case "dirname":
-                directorName = currentValue;
+            case "dirname"://这些dirname，film,t等都是xml中元素的标签
+                directorName = currentValue;//把文本内容存到directorName中
                 break;
             case "film":
                 currentMovie.setDirector(directorName);
@@ -119,7 +120,7 @@ public class MovieSAXParser extends DefaultHandler {
         }
 
     }
-
+    //the following are the three getter
     public List<List<String>> getActorList() {
         return actorList;
     }
@@ -135,10 +136,10 @@ public class MovieSAXParser extends DefaultHandler {
     public static void main(String[] args) {
         MovieSAXParser parserInstance = new MovieSAXParser();
         parserInstance.executeParsing();
-        Insertion insertion = new Insertion();
-        insertion.insertMovies(parserInstance.getMovieList());
-        insertion.insertStars(parserInstance.getActorList());
-        insertion.insertStarsInMovies(parserInstance.getMovieActorsMap());
-        insertion.saveNotFoundDataToFile();
+        Inserter insertion = new Inserter();
+        insertion.inserting_Movies(parserInstance.getMovieList());
+        insertion.inserting_Stars(parserInstance.getActorList());
+        insertion.insertingStarsinMovies(parserInstance.getMovieActorsMap());
+        insertion.saveingDatatoFilewhichareNotFound();
     }
 }
