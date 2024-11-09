@@ -31,4 +31,4 @@ function handleLoginSubmit(logInEvent) {
     );
 }
 
-loginForm.submit(handleLoginSubmit)
+loginForm.submit(handleLoginSubmit);

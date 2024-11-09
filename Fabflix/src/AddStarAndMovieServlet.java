@@ -50,25 +50,52 @@ public class AddStarAndMovieServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         JsonObject respJsonObj = new JsonObject();
 
-
+        // for add star
         String starName = request.getParameter("starName");
         String birthYear = request.getParameter("birthYear");
 
-        System.out.println(starName);
-        System.out.println(birthYear);
+        // for add movie
+        String movieTitle = request.getParameter("movieTitle");
+        String movieYear = request.getParameter("movieYear");
+        String director = request.getParameter("director");
+        String starInMovie = request.getParameter("star");
+        String genreName = request.getParameter("genreName");
+
+        System.out.println(movieTitle);
+        System.out.println(movieYear);
+        System.out.println(director);
+        System.out.println(starInMovie);
+        System.out.println(genreName);
 
         try (Connection conn = dataSource.getConnection()) {
-            String query = "SELECT max(id) as maxId FROM stars";
-            PreparedStatement statement = conn.prepareStatement(query);
-            ResultSet rs = statement.executeQuery();
-            rs.next();
-            String newStarId = createNewId(rs.getString(1));
-            rs.close();
-            statement.close();
+            if (starName != null) {
+                String query = "SELECT max(id) as maxId FROM stars";
+                PreparedStatement statement = conn.prepareStatement(query);
+                ResultSet rs = statement.executeQuery();
+                rs.next();
+                String newStarId = createNewId(rs.getString(1));
+                rs.close();
+                statement.close();
 
-            insertNewStar(conn, newStarId, starName, birthYear);
-            respJsonObj.addProperty("status", "success");
-            respJsonObj.addProperty("message", "Successfully added! Star ID: " + newStarId);
+                insertNewStar(conn, newStarId, starName, birthYear);
+                respJsonObj.addProperty("status", "success");
+                respJsonObj.addProperty("message", "Successfully added! Star ID: " + newStarId);
+            } else if (movieTitle != null) {
+                String procedure = "{CALL add_movie(?, ?, ?, ?, ?, ?)}";
+                CallableStatement callableStatement = conn.prepareCall(procedure);
+                callableStatement.setString(1, movieTitle);
+                callableStatement.setString(2, movieYear);
+                callableStatement.setString(3, director);
+                callableStatement.setString(4, starInMovie);
+                callableStatement.setString(5, genreName);
+                callableStatement.registerOutParameter(6, Types.VARCHAR);
+                System.out.println(callableStatement);
+
+                callableStatement.execute();
+                String statusResp = callableStatement.getString(6);
+                callableStatement.close();
+                respJsonObj.addProperty("message", statusResp);
+            }
         } catch (Exception e) {
             respJsonObj.addProperty("status", "error");
             respJsonObj.addProperty("message", e.getMessage());

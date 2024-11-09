@@ -25,7 +25,8 @@ BEGIN
     ELSE
         -- generate new movie id
         SELECT CONCAT("tt0", SUBSTRING(max(id), 4) + 1) INTO movieId
-        FROM movies;
+        FROM movies
+		where length(id) = 9 AND SUBSTRING(id, 1 , 3) = "tt0";
 
         -- insert new movie into table
         INSERT INTO movies (id, title, year, director)
@@ -34,8 +35,8 @@ BEGIN
         -- check if star exists
         SELECT id INTO starId
         FROM stars
-        WHERE name = star;
-
+        WHERE name = star
+        LIMIT 1;
 
         -- handle star id
         IF starId IS NULL THEN
@@ -50,22 +51,28 @@ BEGIN
         INSERT INTO stars_in_movies (starId, movieId)
         VALUES (starId, movieId);
 
+
+        -- check if genre exists
+        SELECT id INTO genreId
+        FROM genres
+        WHERE name = genre;
+
         -- handle genre id
         IF genreId IS NULL THEN
             SELECT max(id) + 1 INTO genreId
             FROM genres;
 
             -- create new genre
-            INSERT INTO stars (id, name)
-            VALUES (id, genre);
+            INSERT INTO genres (id, name)
+            VALUES (genreId, genre);
         END IF;
 
         INSERT INTO genres_in_movies (genreId, movieId)
         VALUES (genreId, movieId);
 
-        SET statusResp = "Successfully inserted new movie: " || movie_title || "!" || "Movie ID: " || movieId || "Star ID: " || starId || "Genre ID: " || genreId;
+        SET statusResp = CONCAT_WS(" ", "Success! Movie ID:" , movieId, ", Star ID:", starId, ", Genre ID:", genreId);
     END IF;
-END $$;
+END $$
 
 -- Change back DELIMITER to ; 
 DELIMITER ; 
