@@ -11,7 +11,7 @@ public class MovieCategories {
     }
 
     private void initializeCategories() {
-        categoryMap.put("Susp", "Thriller");
+        categoryMap.put("Susp", "Thriller");//把xml中的Susp这个电影类别存为Thriller
         categoryMap.put("CnR", "Cops and Robbers");
         categoryMap.put("CnRb", "Cops and Robbers");
         categoryMap.put("Dram", "Drama");

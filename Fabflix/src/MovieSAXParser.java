@@ -52,12 +52,13 @@ public class MovieSAXParser extends DefaultHandler {
 
     private void displayData() {
         // Uncomment if you need to print movies or actor lists
-        // System.out.println("Total Movies: " + movieList.size());
-        // for (Movie movie : movieList) {
-        //     System.out.println(movie.toString());
-        // }
-        // System.out.println(movieActorsMap);
-        // System.out.println(actorList);
+         //System.out.println("Total Movies: " + movieList.size());//没在terminal看到这个消息！
+         for (Movie movie : movieList) {
+             System.out.println(movie.toString());
+         }
+         System.out.println(movieActorsMap);
+         System.out.println(actorList);
+         System.out.println("Total Movies: " + movieList.size());
     }
 
     @Override

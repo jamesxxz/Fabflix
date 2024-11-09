@@ -32,7 +32,7 @@ public class Inserter {
             String insertMovie = "INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)";
             String queryGenre = "SELECT id FROM genres WHERE name = ?";
             String insertGenre = "INSERT INTO genres (name) VALUES (?)";
-            String linkGenreMovie = "INSERT INTO genres_in_movies (genreId, movieId) VALUES (?, ?)";
+            String linkGenreMovie = "INSERT IGNORE INTO genres_in_movies (genreId, movieId) VALUES (?, ?)";
 
             PreparedStatement movieCheckStmt = connection.prepareStatement(queryMovie);
             PreparedStatement movieInsertStmt = connection.prepareStatement(insertMovie);
@@ -95,10 +95,17 @@ public class Inserter {
                             }
                             genreCounter++;
                         }
-
-                        genreMovieLinkStmt.setInt(1, genreId);
-                        genreMovieLinkStmt.setString(2, movie.getId());
-                        genreMovieLinkStmt.addBatch();
+                        String checkLinkSql = "SELECT COUNT(*) FROM genres_in_movies WHERE genreId = ? AND movieId = ?";
+                        try (PreparedStatement checkLinkStmt = connection.prepareStatement(checkLinkSql)) {
+                            checkLinkStmt.setInt(1, genreId);
+                            checkLinkStmt.setString(2, movie.getId());
+                            ResultSet linkCheckRs = checkLinkStmt.executeQuery();
+                            if (linkCheckRs.next() && linkCheckRs.getInt(1) == 0) {
+                                genreMovieLinkStmt.setInt(1, genreId);
+                                genreMovieLinkStmt.setString(2, movie.getId());
+                                genreMovieLinkStmt.addBatch();
+                            }
+                        }
                     }
                 } else {
                     invalidData.add(new String[]{" inconsistent data", " id: " + movie.getId()});
