@@ -42,9 +42,9 @@ public class MovieSAXParser extends DefaultHandler {
         try {//need to be revised when uploading to aws
             SAXParser parser = factory.newSAXParser();
             //parser.parse在爬xml文件时，每一个xml中的元素都会被startElement,characters, endElement等方法检查。
-            parser.parse("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/mains243.xml", this);
-            parser.parse("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/casts124.xml", this);
-            parser.parse("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/actors63.xml", this);
+            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/mains243.xml", this);
+            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/casts124.xml", this);
+            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/actors63.xml", this);
         } catch (SAXException | ParserConfigurationException | IOException e) {
             e.printStackTrace();
         }
@@ -52,13 +52,13 @@ public class MovieSAXParser extends DefaultHandler {
 
     private void displayData() {
         // Uncomment if you need to print movies or actor lists
-         //System.out.println("Total Movies: " + movieList.size());//没在terminal看到这个消息！
-         for (Movie movie : movieList) {
-             System.out.println(movie.toString());
-         }
-         System.out.println(movieActorsMap);
-         System.out.println(actorList);
-         System.out.println("Total Movies: " + movieList.size());
+        //System.out.println("Total Movies: " + movieList.size());//没在terminal看到这个消息！
+        for (Movie movie : movieList) {
+            System.out.println(movie.toString());
+        }
+        System.out.println(movieActorsMap);
+        System.out.println(actorList);
+        System.out.println("Total Movies: " + movieList.size());
     }
 
     @Override
@@ -121,6 +121,7 @@ public class MovieSAXParser extends DefaultHandler {
         }
 
     }
+
     //the following are the three getter
     public List<List<String>> getActorList() {
         return actorList;

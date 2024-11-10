@@ -3,3 +3,5 @@
 target/
 .project
 .DS_Store
+xml
+errorReport.txt

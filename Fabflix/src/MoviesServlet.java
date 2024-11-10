@@ -81,7 +81,7 @@ public class MoviesServlet extends HttpServlet {
                             "        FROM TopStars WHERE movieId = m.id AND starRank <= 3) AS starIds, " +
                             "       r.rating " +
                             "FROM movies m " +
-                            "JOIN ratings r ON m.id = r.movieId " +
+                            "LEFT JOIN ratings r ON m.id = r.movieId " +
                             "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                             "JOIN stars s ON sim.starId = s.id " +  // 确保 stars 表连接在查询中
                             "JOIN genres_in_movies gim ON m.id = gim.movieId " +
@@ -91,8 +91,6 @@ public class MoviesServlet extends HttpServlet {
                             "ORDER BY " + sortOrder + " " +
                             "LIMIT ? OFFSET ?;";
 
-
-
             // 准备查询语句
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setInt(1, Integer.parseInt(numberPerPage));
@@ -100,6 +98,9 @@ public class MoviesServlet extends HttpServlet {
 
             // 执行查询
             ResultSet rs = statement.executeQuery();
+            System.out.println(rs);
+
+
             // 将查询结果转换为 JSON 数组
             JsonArray jsonArray = new JsonArray();
             while (rs.next()) {

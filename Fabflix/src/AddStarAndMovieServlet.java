@@ -61,11 +61,11 @@ public class AddStarAndMovieServlet extends HttpServlet {
         String starInMovie = request.getParameter("star");
         String genreName = request.getParameter("genreName");
 
-        System.out.println(movieTitle);
-        System.out.println(movieYear);
-        System.out.println(director);
-        System.out.println(starInMovie);
-        System.out.println(genreName);
+//        System.out.println(movieTitle);
+//        System.out.println(movieYear);
+//        System.out.println(director);
+//        System.out.println(starInMovie);
+//        System.out.println(genreName);
 
         try (Connection conn = dataSource.getConnection()) {
             if (starName != null) {

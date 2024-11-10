@@ -20,7 +20,7 @@ BEGIN
     WHERE title = movie_title AND year = movie_year AND director = movie_director;  -- identify by 3 fields
 
     IF movieId is NOT NULL THEN 
-        SET statusResp = "Error: Movie already exists, please try other input.";
+        SET statusResp = "Error: Duplicated movies, please try other input.";
 
     ELSE
         -- generate new movie id
