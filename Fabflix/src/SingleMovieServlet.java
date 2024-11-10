@@ -3,11 +3,13 @@ import com.google.gson.JsonObject;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -72,7 +74,7 @@ public class SingleMovieServlet extends HttpServlet {
                     "GROUP_CONCAT(DISTINCT s.id ORDER BY s.name SEPARATOR ', ') AS star_ids, " +
                     "r.rating " +
                     "FROM movies m " +
-                    "JOIN ratings r ON m.id = r.movieId " +
+                    "LEFT JOIN ratings r ON m.id = r.movieId " +
                     "LEFT JOIN genres_in_movies gim ON m.id = gim.movieId " +
                     "LEFT JOIN genres g ON gim.genreId = g.id " +
                     "LEFT JOIN stars_in_movies sim ON m.id = sim.movieId " +

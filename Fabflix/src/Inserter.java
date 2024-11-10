@@ -174,7 +174,7 @@ public class Inserter {
 
             String verifyMovie = "SELECT count(*) FROM movies WHERE id = ?";
             String verifyActor = "SELECT id FROM stars WHERE name = ?";
-            String addActorMovie = "INSERT INTO stars_in_movies (starId, movieId) VALUES (?, ?)";
+            String addActorMovie = "INSERT IGNORE INTO stars_in_movies (starId, movieId) VALUES (?, ?)";
 
             PreparedStatement movieCheckStmt = connection.prepareStatement(verifyMovie);
             PreparedStatement actorCheckStmt = connection.prepareStatement(verifyActor);
@@ -238,6 +238,7 @@ public class Inserter {
             e.printStackTrace();
         }
     }
+
     public void inserting_Movies(List<Movie> movies) {
         addMovies(movies);
     }
