@@ -52,9 +52,9 @@ public class MovieSAXParser extends DefaultHandler {
         try {//need to be revised when uploading to aws
             SAXParser parser = factory.newSAXParser();
             //parser.parse在爬xml文件时，每一个xml中的元素都会被startElement,characters, endElement等方法检查。
-            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/mains243.xml"), "ISO-8859-1")), this);
-            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/casts124.xml"), "ISO-8859-1")), this);
-            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/actors63.xml"), "ISO-8859-1")), this);
+            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/home/ubuntu/xml/mains243.xml"), "ISO-8859-1")), this);
+            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/home/ubuntu/xml/casts124.xml"), "ISO-8859-1")), this);
+            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/home/ubuntu/xml/actors63.xml"), "ISO-8859-1")), this);
         } catch (SAXException | ParserConfigurationException | IOException e) {
             e.printStackTrace();
         }
