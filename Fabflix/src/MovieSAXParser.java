@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 public class MovieSAXParser extends DefaultHandler {
 
@@ -23,6 +25,7 @@ public class MovieSAXParser extends DefaultHandler {
     private String firstName, lastName, stageName;
 
     private MovieCategories movieCategories;
+    private Set<String> uniqueMovieIds = new HashSet<>();
 
     public MovieSAXParser() {
         movieList = new ArrayList<>();
@@ -64,7 +67,22 @@ public class MovieSAXParser extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         currentValue = "";
-        if (qName.equalsIgnoreCase("film")) {//当xml文件中的元素标签是film时，starElement方法会被调用
+        if (qName.equalsIgnoreCase("film")) {
+            String movieId = attributes.getValue("fid"); // Assuming 'id' is the unique identifier for a film
+
+            // Check if this movie ID already exists in the HashSet
+            if (movieId != null && uniqueMovieIds.contains(movieId)) {
+                System.out.println("Duplicate movie found with ID: " + movieId);
+                // Optionally, skip processing this duplicate film element
+                return;
+            }
+
+            // Add the movie ID to the HashSet to track it as processed
+            if (movieId != null) {
+                uniqueMovieIds.add(movieId);
+            }
+
+            // If it's unique, create a new Movie object
             currentMovie = new Movie();
         }
     }
