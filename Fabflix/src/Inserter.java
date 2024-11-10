@@ -234,6 +234,7 @@ public class Inserter {
             for (String actorId : missingActors) {
                 writer.println("Actor name " + actorId + " not found.");
             }
+            writer.println("finished");
         } catch (Exception e) {
             e.printStackTrace();
         }
