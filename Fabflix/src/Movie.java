@@ -8,6 +8,8 @@ public class Movie {
     private String year;
     private List<String> genreList;
     private String id;
+    private String isbn;
+    private String publisher;
 
     public Movie() {
         this.genreList = new ArrayList<>();
@@ -52,10 +54,24 @@ public class Movie {
     public void addGenre(String genre) {
         this.genreList.add(genre);
     }
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
     @Override
     public String toString() {
-        return String.format("Movie - Director: %s, Title: %s, Year: %s, Genres: %s, ID: %s",
-                getDirector(), getTitle(), getYear(), String.join(", ", getGenres()), getId());
+        return String.format("Movie - Director: %s, Title: %s, Year: %s, Genres: %s, ID: %s, ISBN: %s, Publisher: %s",
+                getDirector(), getTitle(), getYear(), String.join(", ", getGenres()), getId(), getIsbn(), getPublisher());
     }
 }

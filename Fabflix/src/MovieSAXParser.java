@@ -25,6 +25,8 @@ public class MovieSAXParser extends DefaultHandler {
     private String currentFilmId;
     private String firstName, lastName, stageName;
 
+    private boolean hasISBN;
+    private boolean hasPublisher;
     private MovieCategories movieCategories;
 
     public MovieSAXParser() {
@@ -72,6 +74,14 @@ public class MovieSAXParser extends DefaultHandler {
         currentValue = "";
         if (qName.equalsIgnoreCase("film")) {//当xml文件中的元素标签是film时，starElement方法会被调用
             currentMovie = new Movie();
+            hasISBN = false;
+            hasPublisher = false;
+        }
+        if (qName.equalsIgnoreCase("isbn") && !hasISBN) {
+            hasISBN = true; // 标记为已处理第一个 ISBN
+        }
+        if (qName.equalsIgnoreCase("publisher") && !hasPublisher) {
+            hasPublisher = true; // 标记为已处理第一个 publisher
         }
     }
 
@@ -123,6 +133,18 @@ public class MovieSAXParser extends DefaultHandler {
                 actorDetails.add(firstName + " " + lastName);
                 actorDetails.add(currentValue);
                 actorList.add(actorDetails);
+                break;
+            case "isbn":
+                if (hasISBN) {
+                    currentMovie.setIsbn(currentValue); // 设置第一个 ISBN
+                    hasISBN = false; // 只使用第一个 ISBN
+                }
+                break;
+            case "publisher":
+                if (hasPublisher) {
+                    currentMovie.setPublisher(currentValue); // 设置第一个 publisher
+                    hasPublisher = false; // 只使用第一个 publisher
+                }
                 break;
         }
 
