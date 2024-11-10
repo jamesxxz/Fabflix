@@ -12,7 +12,11 @@ import java.util.List;
 import java.util.Map;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+
 import org.xml.sax.InputSource;
+
+import java.util.Set;
+import java.util.HashSet;
 
 public class MovieSAXParser extends DefaultHandler {
 
@@ -28,6 +32,7 @@ public class MovieSAXParser extends DefaultHandler {
     private boolean hasISBN;
     private boolean hasPublisher;
     private MovieCategories movieCategories;
+    private Set<String> uniqueMovieIds = new HashSet<>();
 
     public MovieSAXParser() {
         movieList = new ArrayList<>();
@@ -47,9 +52,6 @@ public class MovieSAXParser extends DefaultHandler {
         try {//need to be revised when uploading to aws
             SAXParser parser = factory.newSAXParser();
             //parser.parse在爬xml文件时，每一个xml中的元素都会被startElement,characters, endElement等方法检查。
-//            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/mains243.xml", this);
-//            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/casts124.xml", this);
-//            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/actors63.xml", this);
             parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/mains243.xml"), "ISO-8859-1")), this);
             parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/casts124.xml"), "ISO-8859-1")), this);
             parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/actors63.xml"), "ISO-8859-1")), this);
@@ -72,7 +74,22 @@ public class MovieSAXParser extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         currentValue = "";
-        if (qName.equalsIgnoreCase("film")) {//当xml文件中的元素标签是film时，starElement方法会被调用
+        if (qName.equalsIgnoreCase("film")) {
+            String movieId = attributes.getValue("fid"); // Assuming 'id' is the unique identifier for a film
+
+            // Check if this movie ID already exists in the HashSet
+            if (movieId != null && uniqueMovieIds.contains(movieId)) {
+                System.out.println("Duplicate movie found with ID: " + movieId);
+                // Optionally, skip processing this duplicate film element
+                return;
+            }
+
+            // Add the movie ID to the HashSet to track it as processed
+            if (movieId != null) {
+                uniqueMovieIds.add(movieId);
+            }
+
+            // If it's unique, create a new Movie object
             currentMovie = new Movie();
             hasISBN = false;
             hasPublisher = false;
