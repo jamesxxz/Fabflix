@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
+import org.xml.sax.InputSource;
+
 import java.util.Set;
 import java.util.HashSet;
 
@@ -45,9 +50,9 @@ public class MovieSAXParser extends DefaultHandler {
         try {//need to be revised when uploading to aws
             SAXParser parser = factory.newSAXParser();
             //parser.parse在爬xml文件时，每一个xml中的元素都会被startElement,characters, endElement等方法检查。
-            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/mains243.xml", this);
-            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/casts124.xml", this);
-            parser.parse("/Users/james/Documents/uci/cs122b_projects/Fabflix/xml/actors63.xml", this);
+            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/mains243.xml"), "ISO-8859-1")), this);
+            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/casts124.xml"), "ISO-8859-1")), this);
+            parser.parse(new InputSource(new InputStreamReader(new FileInputStream("/Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/xml/actors63.xml"), "ISO-8859-1")), this);
         } catch (SAXException | ParserConfigurationException | IOException e) {
             e.printStackTrace();
         }
