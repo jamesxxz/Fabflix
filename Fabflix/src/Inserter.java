@@ -223,6 +223,7 @@ public class Inserter {
         System.out.println(missingMovies.size() + " movies missing.");
         System.out.println(missingActors.size() + " actors missing.");
         System.out.println(invalidData.size() + " invalid records.");
+        System.out.println("finished");
 
         try (PrintWriter writer = new PrintWriter("errorReport.txt", "UTF-8")) {
             for (String[] error : invalidData) {
@@ -234,7 +235,7 @@ public class Inserter {
             for (String actorId : missingActors) {
                 writer.println("Actor name " + actorId + " not found.");
             }
-            writer.println("finished");
+            //writer.println("finished");
         } catch (Exception e) {
             e.printStackTrace();
         }
