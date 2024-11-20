@@ -6,7 +6,6 @@
 
     <!-- 引入 JS 和 CSS 资源 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.7/jquery.autocomplete.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -15,6 +14,9 @@
     <link rel="stylesheet" href="index.css">
 
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2503/2503508.png"/>
+
+    <!-- autocomplete -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
 </head>
 
 <body>
@@ -35,12 +37,12 @@
 <!-- 搜索表单 -->
 <div class="wrap">
     <form id="search" class="searchContainer">
-        <input type="text" class="searchTerm" placeholder="Search Movie By Title" name="sort_title" id="autocomplete">
+        <input type="text" class="searchTerm" placeholder="Movie Title (FullText)" name="sort_title" id="autocomplete">
 
         <div class="searchRow">
             <input type="text" class="searchTermRow" placeholder="Year" name="sort_year" inputmode="numeric">
             <input type="text" class="searchTermRow" placeholder="Director" name="sort_director">
-            <input type="text" class="searchTermRow" placeholder="Star's Name" name="sort_name">
+            <input type="text" class="searchTermRow" placeholder="Star Name" name="sort_name">
         </div>
 
         <button type="submit" class="searchButton">

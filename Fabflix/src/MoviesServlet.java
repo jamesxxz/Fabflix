@@ -15,6 +15,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.List;
 
 // 将这个 Servlet 映射到 /api/movies URL
 @WebServlet(name = "MoviesServlet", urlPatterns = "/api/movies")
@@ -104,32 +106,6 @@ public class MoviesServlet extends HttpServlet {
             // 将查询结果转换为 JSON 数组
             JsonArray jsonArray = new JsonArray();
             while (rs.next()) {
-
-//                String[] genre = rs.getString("genres").split(", ");
-//                String[] star = rs.getString("stars").split(", ");
-//                String[] starId = rs.getString("starIds").split(", ");
-//
-//                String genres = "";
-//                if (genre.length > 3) {
-//                    genres = genre[0] + ", " + genre[1] + ", " + genre[2];
-//                } else {
-//                    genres = rs.getString("genres");
-//                }
-//
-//                String stars = "";
-//                if (star.length > 3) {
-//                    stars = star[0] + ", " + star[1] + ", " + star[2];
-//                } else {
-//                    stars = rs.getString("stars");
-//                }
-//
-//                String starIds = "";
-//                if (starId.length > 3) {
-//                    starIds = starId[0] + ", " + starId[1] + ", " + starId[2];
-//                } else {
-//                    starIds = rs.getString("starIds");
-//                }
-
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("movie_id", rs.getString("id"));
                 jsonObject.addProperty("movie_title", rs.getString("title"));
@@ -191,7 +167,11 @@ public class MoviesServlet extends HttpServlet {
             String value = conditions[i + 1];
             switch (field) {
                 case "title":
-                    inputQuery.append("m.title LIKE '%").append(value).append("%'");
+                    List<String> valLst = List.of(value.split(" "));
+                    List<String> resLst = valLst.stream()
+                            .map(str -> "+" + str + "*")
+                            .collect(Collectors.toList());
+                    inputQuery.append("MATCH(m.title) AGAINST ('").append(String.join(" ", resLst)).append("' IN BOOLEAN MODE) ");
                     break;
                 case "year":
                     inputQuery.append("m.year = ").append(value);
