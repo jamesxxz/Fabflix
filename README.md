@@ -1,8 +1,37 @@
-cs122b project3
-Demo Video URL:
+- # General
+    - #### Team#: 
+    - CPDD
 
-Task3:
-File with prepared statements:
+    - #### Names: 
+    - Sijie Guo, James Liu
+
+    - #### Project 4 Video Demo Link:
+
+    - #### Instruction of deployment:
+
+    - #### Collaborations and Work Distribution:
+    - James implemented Task1,
+    - Sijie Guo implemented Task2,
+
+
+- # Connection Pooling
+    - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/AddStarAndMovieServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/ConfirmationServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/DashboardServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/EmployeeLoginServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/IndexServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/LoginServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/MoviesServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/PaymentServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/SingleMovieServlet.java
+      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/SingleStarServlet.java
+      
+    - #### Explain how Connection Pooling is utilized in the Fabflix code.
+      Connection Pooling is implemented using Tomcat's JDBC Connection Pooling feature. Instead of creating a new database connection for each request, connections are retrieved from a pre-configured pool, improving performance and resource utilization.
+    - #### Explain how Connection Pooling works with two backend SQL.
+
+- # Files with Prepared Statement:
 - AddStarAndMovieServlet
 - ConfirmationServlet
 - DashboardServlet
@@ -15,20 +44,27 @@ File with prepared statements:
 - SingleMovieServlet
 - SingleStarServlet
 
-Task6: Report inconsistency data
-- Check errorReport.txt
+- # Master/Slave
+    - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
 
-Task6: Optimization: (Batch Processing, Caching Frequently Queried Data)
-- 1.Batch Processing for Database Inserts:
-To optimize performance for large datasets, I implemented batch processing for database inserts, reducing the number of individual SQL operations. 
-By grouping `INSERT` statements into batches, multiple records are processed in a single transaction, minimizing database round-trips. 
-This method significantly improves data insertion speed, achieving around a 40% reduction in execution time for a 10,000-entry dataset.
-- 2.Caching Frequently Queried Data:
-Additionally, I added caching for frequently queried data, such as genre names and genre-movie links, to avoid redundant database lookups. 
-By storing processed data in memory, the program minimizes repeated queries for existing entries, further reducing execution time by approximately 25%. 
-Together, these optimizations ensure efficient handling of large data imports.
+    - #### How read/write requests were routed to Master/Slave SQL?
 
 
-Each member's contribution to the project(We collaborate throughout the whole project):
-Sijie Guo: Task1,3,5. Made the payment page. Made the main page. Made the confirmation page. Made the Single-star Page. Made the jump feature between pages. Made the return home button. Made the database. Made css
-James Liu: Task2,4,6. Made the log in page. Made shopping cart page. Made the confirmation page. Made the Movie-List Page. Made the jump feature between pages. Made the Single-Movie Page. Set up the AWS. Upload to AWS Instance
+- # JMeter TS/TJ Time Logs
+    - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
+
+
+- # JMeter TS/TJ Time Measurement Report
+
+| **Single-instance Version Test Plan**          | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
+|------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
+| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 3: HTTPS/10 threads                       | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 4: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+
+| **Scaled Version Test Plan**                   | **Graph Results Screenshot** | **Average Query Time(ms)** | **Average Search Servlet Time(ms)** | **Average JDBC Time(ms)** | **Analysis** |
+|------------------------------------------------|------------------------------|----------------------------|-------------------------------------|---------------------------|--------------|
+| Case 1: HTTP/1 thread                          | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 2: HTTP/10 threads                        | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
+| Case 3: HTTP/10 threads/No connection pooling  | ![](path to image in img/)   | ??                         | ??                                  | ??                        | ??           |
