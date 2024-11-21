@@ -16,17 +16,18 @@
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/AddStarAndMovieServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/ConfirmationServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/DashboardServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/EmployeeLoginServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/IndexServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/LoginServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/MoviesServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/PaymentServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/SingleMovieServlet.java
-        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/SingleStarServlet.java
-      
+        - Fabflix/src/AddStarAndMovieServlet.java
+        - Fabflix/src/ConfirmationServlet.java
+        - Fabflix/src/DashboardServlet.java
+        - Fabflix/src/EmployeeLoginServlet.java
+        - Fabflix/src/IndexServlet.java
+        - Fabflix/src/LoginServlet.java
+        - Fabflix/src/MoviesServlet.java
+        - Fabflix/src/PaymentServlet.java
+        - Fabflix/src/SingleMovieServlet.java
+        - Fabflix/src/SingleStarServlet.java
+        - Fabflix/src/MovieSuggestion.java
+  
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
         Connection Pooling is implemented using Tomcat's JDBC Connection Pooling feature. 
         Instead of creating a new database connection for each request, connections are retrieved from a pre-configured pool, improving performance and resource utilization.
@@ -50,17 +51,18 @@
    - #### Explain how Connection Pooling works with two backend SQL.
 
 - # Files with Prepared Statement:
-- AddStarAndMovieServlet
-- ConfirmationServlet
-- DashboardServlet
-- EmployeeLoginServlet
-- IndexServlet
-- Inserter
-- LoginServlet
-- MoviesServlet
-- PaymentServlet
-- SingleMovieServlet
-- SingleStarServlet
+    - AddStarAndMovieServlet
+    - ConfirmationServlet
+    - DashboardServlet
+    - EmployeeLoginServlet
+    - IndexServlet
+    - Inserter
+    - LoginServlet
+    - MoviesServlet
+    - PaymentServlet
+    - SingleMovieServlet
+    - SingleStarServlet
+    - MovieSuggestion
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
