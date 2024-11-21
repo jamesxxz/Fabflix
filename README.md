@@ -16,20 +16,38 @@
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/AddStarAndMovieServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/ConfirmationServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/DashboardServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/EmployeeLoginServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/IndexServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/LoginServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/MoviesServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/PaymentServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/SingleMovieServlet.java
-      - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/SingleStarServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/AddStarAndMovieServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/ConfirmationServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/DashboardServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/EmployeeLoginServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/IndexServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/LoginServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/MoviesServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/PaymentServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/SingleMovieServlet.java
+        - /Users/darius/Desktop/2024-fall-cs-122b-cpdd/Fabflix/src/SingleStarServlet.java
       
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
-      Connection Pooling is implemented using Tomcat's JDBC Connection Pooling feature. Instead of creating a new database connection for each request, connections are retrieved from a pre-configured pool, improving performance and resource utilization.
-    - #### Explain how Connection Pooling works with two backend SQL.
+        Connection Pooling is implemented using Tomcat's JDBC Connection Pooling feature. 
+        Instead of creating a new database connection for each request, connections are retrieved from a pre-configured pool, improving performance and resource utilization.
+        Take AddStarAndMovieServlet as an example. The servlet uses a DataSource object to manage connections:dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+        Each request retrieves a connection from the pool:
+              try (Connection conn = dataSource.getConnection()) {
+              }
+    
+        This approach ensures efficient connection reuse and minimizes the overhead of creating and destroying connections.
+      
+        Apart from the servlet files, the context.xml is also revised.
+        In the context.xml File:
+    
+        The JDBC connection pool is configured with:
+        maxTotal=100: Limits the maximum number of active connections in the pool.
+        maxIdle=30: Restricts the number of idle connections in the pool.
+        maxWaitMillis=10000: Sets the maximum wait time (in milliseconds) for a connection to become available.
+        cachePrepStmts=true: Enables prepared statement caching, which improves performance in a pooled environment.
+
+      
+   - #### Explain how Connection Pooling works with two backend SQL.
 
 - # Files with Prepared Statement:
 - AddStarAndMovieServlet
