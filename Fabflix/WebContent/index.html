@@ -17,6 +17,43 @@
 
     <!-- autocomplete -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
+    <style>
+        /* Autocomplete Suggestions Dropdown */
+        .autocomplete-suggestions {
+            width: 100%; /* Matches the width of the search input */
+            max-height: 300px; /* Limit height and make it scrollable */
+            overflow: auto;
+            background-color: #ffffff; /* White background for contrast */
+            border: 2px solid #FA9F0D;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            color: #333333;
+        }
+
+        /* Individual suggestion items */
+        .autocomplete-suggestion {
+            padding: 10px 15px; /* Comfortable padding for clickable items */
+            font-size: 16px;
+            color: #333333; /* Default text color */
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .autocomplete-suggestion:hover {
+            background-color: #FA9F0D; /* Highlight background on hover */
+            color: white;
+        }
+
+        /* Highlighted suggestion */
+        .autocomplete-suggestion.autocomplete-selected {
+            background-color: #FA9F0D;
+            color: white;
+        }
+
+        .searchTerm {
+            width: 80%;
+        }
+    </style>
 </head>
 
 <body>

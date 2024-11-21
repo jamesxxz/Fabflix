@@ -2,17 +2,25 @@
 let search = $("#search");
 
 function handleLookup(query, doneCallback) {
-    console.log("autocomplete initiated")
+    console.log("Autocomplete initiated")
 
     // TODO: if you want to check past query results first, you can do it here
-    console.log(query);
-    // sending the HTTP GET request to the Java Servlet endpoint hero-suggestion
+    let dataInCache = sessionStorage.getItem(query);
+    if (dataInCache !== null) {
+        console.log("Successfully using query in cache");
+        let jsonData = JSON.parse(dataInCache);
+        console.log(jsonData);
+        doneCallback({suggestions: jsonData});
+        return;
+    }
+
+    // sending the HTTP GET request to the Java Servlet endpoint movie-suggestion
     // with the query data
     jQuery.ajax({
         "method": "GET",
         // generate the request url from the query.
         // escape the query string to avoid errors caused by special characters
-        "url": "hero-suggestion?query=" + escape(query),
+        "url": "movie-suggestion?query=" + escape(query),
         "success": function (data) {
             // pass the data, query, and doneCallback function into the success handler
             handleLookupAjaxSuccess(data, query, doneCallback)
@@ -33,13 +41,14 @@ function handleLookup(query, doneCallback) {
  *
  */
 function handleLookupAjaxSuccess(data, query, doneCallback) {
-    console.log("lookup ajax successful")
+    console.log("sending ajax request successful")
 
     // parse the string into JSON
     var jsonData = JSON.parse(data);
-    console.log(jsonData)
 
     // TODO: if you want to cache the result into a global variable you can do it here
+    sessionStorage.setItem(query, JSON.stringify(jsonData))
+    console.log(jsonData)
 
     // call the callback function provided by the autocomplete library
     // add "{suggestions: jsonData}" to satisfy the library response format according to
@@ -55,9 +64,11 @@ function handleLookupAjaxSuccess(data, query, doneCallback) {
  * You can redirect to the page you want using the suggestion data.
  */
 function handleSelectSuggestion(suggestion) {
-    // TODO: jump to the specific result page based on the selected suggestion
+    // jump to the specific result page based on the selected suggestion
+    let url = window.location.href;
+    window.location.href = url.replace("index.html", "single-movie.html?id=") + suggestion["data"]["movieID"];
 
-    console.log("you select " + suggestion["value"] + " with ID " + suggestion["data"]["heroID"])
+    console.log("you select " + suggestion["value"] + " with ID " + suggestion["data"]["movieID"])
 }
 
 $('#autocomplete').autocomplete({
@@ -79,7 +90,7 @@ $('#autocomplete').keypress(function (event) {
     }
 })
 
-// 处理类别和字母导航的结果
+// 处理类别和字母导航的结果b
 function handleGenreResult(resultData) {
     console.log("Populating genre and alpha lists");
 

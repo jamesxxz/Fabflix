@@ -56,6 +56,10 @@ async function sortStarsByMoviesPlayed(starsArr, starIdsArr) {
 }
 
 async function processStars(starsString, starIdsString) {
+    if (!starsString) {
+        return "n/a";
+    }
+
     const starsArr = starsString.split(', ');
 
     // 如果 starIdsString 是 undefined 或 null，进行处理
@@ -81,6 +85,9 @@ async function processStars(starsString, starIdsString) {
 }
 
 function processGenres(genreString) {
+    if (!genreString) {
+        return "n/a"
+    }
     const genresArr = genreString.split(', ');
 
     const anchorTags = genresArr.map((genre, index) => {
