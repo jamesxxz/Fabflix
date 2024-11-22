@@ -1,7 +1,8 @@
-.idea
+.idea/
 *.iml
 target/
 .project
 .DS_Store
 xml
 errorReport.txt
+movie-data.sql
