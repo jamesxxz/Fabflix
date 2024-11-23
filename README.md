@@ -16,8 +16,8 @@
       6. copy the newly built war file to tomcat: ```cp ./target/*.war /var/lib/tomcat10/webapps//```
          
     - #### Collaborations and Work Distribution:
-      James implemented Task1, Task3, Task4, readme
-      Sijie Guo implemented Task2, Task4, readme
+        - James implemented Task1, Task3, Task4, readme
+        - Sijie Guo implemented Task2, Task4, readme
 
 
 - # Connection Pooling
