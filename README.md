@@ -39,7 +39,6 @@
       This approach ensures efficient connection reuse and minimizes the overhead of creating and destroying connections.
 
       Apart from the servlet files, the context.xml is also revised.
-      In the context.xml File:
 
       The JDBC connection pool is configured with:
       maxTotal=100: Limits the maximum number of active connections in the pool.
