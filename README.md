@@ -97,6 +97,15 @@
 
 
     - #### How read/write requests were routed to Master/Slave SQL?
+        In our application, read and write requests are routed to the appropriate Master or Slave SQL database by leveraging separate JDBC DataSources defined in the context.xml file and referenced in the servlets. 
+      This setup ensures efficient use of resources and scalability.
+
+      Master Database(jdbc/masterdb): Defined in the context.xml to handle all write operations (INSERT, UPDATE, DELETE).
+      Slave Database (jdbc/slavedb): Defined in the context.xml to handle all read operations (SELECT). Configured as a load-balanced setup between the primary host (localhost) and a slave host (slavehost).
+      Write Requests (Master Database): Write-intensive operations (e.g., adding a new movie or star) use the jdbc/masterdb resource. In the AddStarAndMovieServlet, the init() method explicitly retrieves the masterdb DataSource.
+      Read Requests (Slave Database): Read-intensive operations (e.g., fetching movie details or suggestions) use the jdbc/slavedb resource. Servlets handling read operations would include a similar init() method but point to slavedb.
+
+      Both Master (jdbc/masterdb) and Slave (jdbc/slavedb) DataSources are registered in the web.xml file
 
 
 
