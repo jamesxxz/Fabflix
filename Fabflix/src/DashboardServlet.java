@@ -21,7 +21,7 @@ public class DashboardServlet extends HttpServlet {
     public void init() {
         try {
             InitialContext ctx = new InitialContext();
-            dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/slavedb");
         } catch (NamingException e) {
             e.printStackTrace();
         }

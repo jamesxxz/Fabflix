@@ -24,7 +24,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/slavedb");
         } catch (NamingException e) {
             log("Error during DataSource lookup:", e);
         }

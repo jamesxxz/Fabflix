@@ -27,7 +27,7 @@ public class MoviesServlet extends HttpServlet {
     public void init(ServletConfig config) {
         try {
             // 初始化数据源，连接到数据库
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/slavedb");
         } catch (NamingException e) {
             e.printStackTrace();
         }
