@@ -10,8 +10,8 @@
     - #### Instruction of deployment:
 
     - #### Collaborations and Work Distribution:
-    - James implemented Task1,
-    - Sijie Guo implemented Task2,
+    - James implemented Task1,Task3,Task4,readme
+    - Sijie Guo implemented Task2,Task4,readme
 
 
 - # Connection Pooling
@@ -49,8 +49,17 @@
 
       
    - #### Explain how Connection Pooling works with two backend SQL.
-
-- # Files with Prepared Statement:
+     Connection Pooling in a system with two backend SQL databases involves managing connections to both a Master database and a Slave database.
+     The Master database is used for write operations, and the Slave database is used for read operations. This setup optimizes performance and scalability by dividing the workload between the two databases.
+     The context.xml file is configured with separate data sources for the Master and Slave databases. Each data source is defined with its own connection pool.
+     The Master DataSource handles all the write operations such as INSERT, UPDATE, DELETE, and so on. The Slave DataSource handles all the read operations such as SELECT.
+     
+     In our Fabflix code, servlets dynamically retrieve connections from the appropriate pool based on the type of database operation.
+     For write-intensive operations, such as adding a new movie or updating user information, a connection is retrieved from the jdbc/moviedb_master pool: Connection conn = masterDataSource.getConnection();
+     For read-intensive operations, such as fetching movie details or user queries, a connection is retrieved from the jdbc/moviedb_slave pool: Connection conn = slaveDataSource.getConnection();
+     After this, code logic determines the appropriate data source based on the operation type(INSERT, SELECT, and so on)
+     
+   - # Files with Prepared Statement:
     - AddStarAndMovieServlet
     - ConfirmationServlet
     - DashboardServlet
@@ -66,10 +75,30 @@
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
+      Fabflix/WebContent/META-INF/context.xml
+      Fabflix/WebContent/WEB-INF/web.xml
+
+      read-only:
+          Fabflix/src/ConfirmationServlet.java
+          Fabflix/src/DashboardServlet.java
+          Fabflix/src/EmployeeLoginServlet.java
+          Fabflix/src/IndexServlet.java
+          Fabflix/src/LoginServlet.java
+          Fabflix/src/MoviesServlet.java
+          Fabflix/src/SingleMovieServlet.java
+          Fabflix/src/SingleStarServlet.java
+          Fabflix/src/MovieSuggestion.java
+
+      read/write
+          Fabflix/src/PaymentServlet.java
+          Fabflix/src/AddStarAndMovieServlet.java        
+
 
     - #### How read/write requests were routed to Master/Slave SQL?
 
 
+
+-----------------------------------The following are contents for Project5------------------------------------------------------
 - # JMeter TS/TJ Time Logs
     - #### Instructions of how to use the `log_processing.*` script to process the JMeter logs.
 
