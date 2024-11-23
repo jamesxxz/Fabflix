@@ -8,16 +8,16 @@
     - #### Project 4 Video Demo Link:
         
     - #### Instruction of deployment:
-      1. git clone the git repo in on aws instance: git clone ```https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-cpdd.git```
+      1. git clone the git repo in on aws instance: ```git clone https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-cpdd.git```
       2. cd into the repo: ```cd 2024-fall-cs-122b-cpdd/```
       3. switch to the newest branch currently: ```git checkout proj4```
       4. cd into the directory where pom.xml located: ```cd Fabflix/```
-      5. build the war file ```mvn package```
+      5. build the war file: ```mvn package```
       6. copy the newly built war file to tomcat: ```cp ./target/*.war /var/lib/tomcat10/webapps//```
          
     - #### Collaborations and Work Distribution:
-      James implemented Task1,Task3,Task4,readme
-      Sijie Guo implemented Task2,Task4,readme
+      James implemented Task1, Task3, Task4, readme
+      Sijie Guo implemented Task2, Task4, readme
 
 
 - # Connection Pooling
