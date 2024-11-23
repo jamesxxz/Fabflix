@@ -90,7 +90,6 @@
         - Fabflix/src/PaymentServlet.java
         - Fabflix/src/AddStarAndMovieServlet.java
 
-
     - #### How read/write requests were routed to Master/Slave SQL?
         In our application, read and write requests are routed to the appropriate Master or Slave SQL database by leveraging separate JDBC DataSources defined in the context.xml file and referenced in the servlets. 
       This setup ensures efficient use of resources and scalability.
