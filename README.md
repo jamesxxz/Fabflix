@@ -96,11 +96,12 @@
 
       Master Database(jdbc/masterdb): Defined in the context.xml to handle all write operations (INSERT, UPDATE, DELETE).
       Slave Database (jdbc/slavedb): Defined in the context.xml to handle all read operations (SELECT). Configured as a load-balanced setup between the primary host (localhost) and a slave host (slavehost).
+      The load-balanced JDBC URL ensures that read requests are evenly distributed across the available database instances, enhancing the system's scalability and ensuring high availability.
       Write Requests (Master Database): Write-intensive operations (e.g., adding a new movie or star) use the jdbc/masterdb resource. In the AddStarAndMovieServlet, the init() method explicitly retrieves the masterdb DataSource.
       Read Requests (Slave Database): Read-intensive operations (e.g., fetching movie details or suggestions) use the jdbc/slavedb resource. Servlets handling read operations would include a similar init() method but point to slavedb.
 
       Both Master (jdbc/masterdb) and Slave (jdbc/slavedb) DataSources are registered in the web.xml file
-
+      
 
 
 -----------------------------------The following are contents for Project5------------------------------------------------------
