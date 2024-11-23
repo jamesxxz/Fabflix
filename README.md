@@ -22,30 +22,20 @@
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-        - Fabflix/src/AddStarAndMovieServlet.java
-        - Fabflix/src/ConfirmationServlet.java
-        - Fabflix/src/DashboardServlet.java
-        - Fabflix/src/EmployeeLoginServlet.java
-        - Fabflix/src/IndexServlet.java
-        - Fabflix/src/LoginServlet.java
-        - Fabflix/src/MoviesServlet.java
-        - Fabflix/src/PaymentServlet.java
-        - Fabflix/src/SingleMovieServlet.java
-        - Fabflix/src/SingleStarServlet.java
-        - Fabflix/src/MovieSuggestion.java
+        - Fabflix/WebContent/META-INF/context.xml
 
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
       Connection Pooling is implemented using Tomcat's JDBC Connection Pooling feature.
+      The servlet's init method initializes the DataSource object. This is down by using JNDI to look up the resource from the context. In our application's code: `java:comp/env/jdbc/masterdb` or `java:comp/env/jdbc/slavedb`.
       Instead of creating a new database connection for each request, connections are retrieved from a pre-configured pool, improving performance and resource utilization.
-      Take AddStarAndMovieServlet as an example. The servlet uses a DataSource object to manage connections:dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
-      Each request retrieves a connection from the pool:
+      Take AddStarAndMovieServlet as an example. The servlet uses a DataSource object to manage connections:dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/masterdb");
+      In the doPost method, each request retrieves a connection from the pool:
       try (Connection conn = dataSource.getConnection()) {
       }
 
       This approach ensures efficient connection reuse and minimizes the overhead of creating and destroying connections.
 
-      Apart from the servlet files, the context.xml is also revised.
-
+      Apart from the servlet files, the context.xml is revised.
       The JDBC connection pool is configured with:
       maxTotal=100: Limits the maximum number of active connections in the pool.
       maxIdle=30: Restricts the number of idle connections in the pool.
