@@ -76,23 +76,24 @@
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-      Fabflix/WebContent/META-INF/context.xml
-      Fabflix/WebContent/WEB-INF/web.xml
+      Configuration file
+          - Fabflix/WebContent/META-INF/context.xml
+          - Fabflix/WebContent/WEB-INF/web.xml
 
-      read-only:
-      Fabflix/src/ConfirmationServlet.java
-      Fabflix/src/DashboardServlet.java
-      Fabflix/src/EmployeeLoginServlet.java
-      Fabflix/src/IndexServlet.java
-      Fabflix/src/LoginServlet.java
-      Fabflix/src/MoviesServlet.java
-      Fabflix/src/SingleMovieServlet.java
-      Fabflix/src/SingleStarServlet.java
-      Fabflix/src/MovieSuggestion.java
+      Servlets utilize read-only data source:
+          - Fabflix/src/ConfirmationServlet.java
+          - Fabflix/src/DashboardServlet.java
+          - Fabflix/src/EmployeeLoginServlet.java
+          - Fabflix/src/IndexServlet.java
+          - Fabflix/src/LoginServlet.java
+          - Fabflix/src/MoviesServlet.java
+          - Fabflix/src/SingleMovieServlet.java
+          - Fabflix/src/SingleStarServlet.java
+          - Fabflix/src/MovieSuggestion.java
 
-      read/write
-      Fabflix/src/PaymentServlet.java
-      Fabflix/src/AddStarAndMovieServlet.java
+      Servlets utilize read/write data source:
+          - Fabflix/src/PaymentServlet.java
+          - Fabflix/src/AddStarAndMovieServlet.java
 
 
     - #### How read/write requests were routed to Master/Slave SQL?
