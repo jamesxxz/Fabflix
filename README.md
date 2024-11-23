@@ -13,7 +13,7 @@
       3. switch to the newest branch currently: ```git checkout proj4```
       4. cd into the directory where pom.xml located: ```cd Fabflix/```
       5. build the war file: ```mvn package```
-      6. copy the newly built war file to tomcat: ```cp ./target/*.war /var/lib/tomcat10/webapps//```
+      6. copy the newly built war file to tomcat: ```cp ./target/*.war /var/lib/tomcat10/webapps/```
          
     - #### Collaborations and Work Distribution:
         - James implemented Task1, Task3, Task4, readme
@@ -91,7 +91,7 @@
         - Fabflix/src/AddStarAndMovieServlet.java
 
     - #### How read/write requests were routed to Master/Slave SQL?
-        In our application, read and write requests are routed to the appropriate Master or Slave SQL database by leveraging separate JDBC DataSources defined in the context.xml file and referenced in the servlets. 
+      In our application, read and write requests are routed to the appropriate Master or Slave SQL database by leveraging separate JDBC DataSources defined in the context.xml file and referenced in the servlets. 
       This setup ensures efficient use of resources and scalability.
 
       Master Database(jdbc/masterdb): Defined in the context.xml to handle all write operations (INSERT, UPDATE, DELETE).
