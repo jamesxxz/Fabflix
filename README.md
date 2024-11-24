@@ -5,7 +5,7 @@
     - #### Names:
       Sijie Guo, James Liu
 
-    - #### Project 4 Video Demo Link: [https://www.youtube.com/watch?v=J6CkmRNriMo]
+    - #### Project 4 Video Demo Link: https://www.youtube.com/watch?v=J6CkmRNriMo
         
     - #### Instruction of deployment:
       1. git clone the git repo in on aws instance: ```git clone https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-cpdd.git```
