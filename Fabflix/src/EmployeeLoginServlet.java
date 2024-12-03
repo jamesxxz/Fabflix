@@ -49,6 +49,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 
         String email = "";
         String encryptedPassword = "";
+        String storedPassword = "";
         boolean isSuccess = false;
         try (Connection conn = dataSource.getConnection()) {
             String query = "SELECT * from employees where email = ? ";
@@ -59,8 +60,11 @@ public class EmployeeLoginServlet extends HttpServlet {
 
             if (rs.next()) {
                 email = rs.getString("email");
-                encryptedPassword = rs.getString("password");
-                isSuccess = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);
+                //encryptedPassword = rs.getString("password");
+                //isSuccess = new StrongPasswordEncryptor().checkPassword(password, encryptedPassword);//need to be revised
+                storedPassword = rs.getString("password");
+                // Compare plain-text passwords directly
+                isSuccess = password.equals(storedPassword);
             }
 
         } catch (Exception e) {
