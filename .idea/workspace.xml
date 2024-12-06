@@ -11,8 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dfaa249d-f753-4045-ad62-5c378b8b286f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fabflix/src/EmployeeLoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/Fabflix/src/EmployeeLoginServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Fabflix/src/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/Fabflix/src/LoginServlet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +186,7 @@
       <workItem from="1731050374967" duration="58044000" />
       <workItem from="1731264673640" duration="6077000" />
       <workItem from="1731356793602" duration="2842000" />
-      <workItem from="1731567448960" duration="57203000" />
+      <workItem from="1731567448960" duration="77534000" />
     </task>
     <servers />
   </component>
