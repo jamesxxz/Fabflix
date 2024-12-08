@@ -88,7 +88,13 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="title" elementType="HTTPArgument">
                 <stringProp name="Argument.name">title</stringProp>
-                <stringProp name="Argument.value">${title}</stringProp>
+                <stringProp name="Argument.value">${__urlencode(${title})}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+                <boolProp name="HTTPArgument.use_equals">true</boolProp>
+              </elementProp>
+              <elementProp name="commonParam" elementType="HTTPArgument">
+                <stringProp name="Argument.name">commonParam</stringProp>
+                <stringProp name="Argument.value">${__urlencode(defaultValue)}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
               </elementProp>
@@ -133,7 +139,7 @@
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">
+        <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
